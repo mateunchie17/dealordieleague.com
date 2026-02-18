@@ -129,3 +129,9 @@ thead th:nth-child(5){
 #leaderboard tbody tr:nth-child(3) td:first-child {
   font-size: 17px;
 }
+.playoff-divider td{
+  border-bottom: 2px solid #22c55e;
+  padding: 0;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+}
