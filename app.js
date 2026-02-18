@@ -100,12 +100,19 @@ async function load() {
     leaderboardBody.appendChild(tr);
 
     // playoff cutoff based on POSITION (top N rows)
-    if (i === PLAYOFF_SPOTS - 1) {
-      const divider = document.createElement("tr");
-      divider.className = "playoff-divider";
-      divider.innerHTML = `<td colspan="6">Playoff cutoff (Top ${PLAYOFF_SPOTS})</td>`;
-      leaderboardBody.appendChild(divider);
-    }
+   if (i === PLAYOFF_SPOTS - 1) {
+  const divider = document.createElement("tr");
+  divider.className = "playoff-divider";
+
+  divider.innerHTML = `
+    <td colspan="6">
+      🏆 PLAYOFFS (Top ${PLAYOFF_SPOTS})
+    </td>
+  `;
+
+  leaderboardBody.appendChild(divider);
+}
+
   });
 
   // ----------------------------
