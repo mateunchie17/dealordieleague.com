@@ -5,7 +5,7 @@
 \margl1440\margr1440\vieww11520\viewh8400\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\fs24 \cf0 const DATA_URL = "PASTE_YOUR_WEB_APP_URL_HERE";\
+\f0\fs24 \cf0 const DATA_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AY5xjrTYZnYTE4pfc_K9_4ULH4jtuaht2i7ZHQOzvpzkfQ-HbJqt521qvocdiTwxf252cx275MLF_--lzUQbcvgQpeFYjtFB-e9H2q8Q0KnGnzmRZJyrjRQZe3frnVhv8Y7ksOdgYJLXbgc7ELM_FW-_w11LyQNC2fZjbMlbbFD1P-buJQBH5floBX8JiFwjYlG4BDhdxmGLocrh4wUXmuZRDCxSzvV5sYSvduM1p9nYJCnVpt-wyTNCsTarx7UviP8Tk_Pcwy96cWGCbRKgHRhUtJG9JyHARiHL0C286sl4&lib=MC224wZixs_4RDNExT7UVFRaw35ay4lOA";\
 \
 function pct(wins, games) \{\
   if (!games) return "0.0%";\
