@@ -140,3 +140,15 @@ section {
   border-radius: 16px;
   padding: 18px;
   box-shado
+/* ======================
+   LOGO
+====================== */
+
+.site-logo {
+  width: 220px;
+  max-width: 90%;
+  display: block;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+}
+
