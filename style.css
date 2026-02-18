@@ -1,3 +1,7 @@
+/* =========================
+   ROOT COLORS / THEME
+========================= */
+
 :root{
   --bg: #0b0f17;
   --card: #111827;
@@ -5,18 +9,30 @@
   --muted: #9ca3af;
   --line: rgba(255,255,255,0.10);
   --header: rgba(255,255,255,0.06);
+  --accent: #22c55e;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body{
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,0.20), transparent 60%),
-              radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,0.18), transparent 55%),
-              var(--bg);
+
+  /* San Diego sunset gradients */
+  background:
+    radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,0.20), transparent 60%),
+    radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,0.18), transparent 55%),
+    var(--bg);
+
   color: var(--text);
 }
+
+
+/* =========================
+   HEADER
+========================= */
 
 header{
   max-width: 980px;
@@ -35,6 +51,11 @@ h1{
   color: var(--muted);
   font-size: 14px;
 }
+
+
+/* =========================
+   LAYOUT
+========================= */
 
 main{
   max-width: 980px;
@@ -59,6 +80,11 @@ h2{
   color: var(--text);
   letter-spacing: -0.01em;
 }
+
+
+/* =========================
+   TABLES
+========================= */
 
 table{
   width: 100%;
@@ -85,53 +111,83 @@ th, td{
   font-size: 14px;
 }
 
+/* alternating rows */
 tbody tr:nth-child(even){
   background: rgba(255,255,255,0.03);
 }
 
+/* hover glow */
 tbody tr:hover{
   background: rgba(99,102,241,0.10);
 }
 
-td:nth-child(2),
+/* numeric columns aligned right */
 td:nth-child(3),
 td:nth-child(4),
-td:nth-child(5){
+td:nth-child(5),
+td:nth-child(6){
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-thead th:nth-child(2),
 thead th:nth-child(3),
 thead th:nth-child(4),
-thead th:nth-child(5){
+thead th:nth-child(5),
+thead th:nth-child(6){
   text-align: right;
 }
 
-@media (max-width: 640px){
-  h1{ font-size: 26px; }
-  th, td{ padding: 10px 10px; font-size: 13px; }
-}
-/* Rank column */
-#leaderboard th:first-child,
-#leaderboard td:first-child {
-  width: 48px;
+
+/* =========================
+   RANK COLUMN
+========================= */
+
+td:first-child,
+th:first-child{
   text-align: center;
+  width: 60px;
   font-weight: 600;
 }
 
-/* Make top 3 rows slightly special */
-#leaderboard tbody tr:nth-child(1) td:first-child {
-  font-size: 18px;
+
+/* =========================
+   PLAYOFF DIVIDER
+========================= */
+
+.playoff-divider td{
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-bottom: 2px solid var(--accent);
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34,197,94,0.10),
+    transparent
+  );
 }
 
-#leaderboard tbody tr:nth-child(2) td:first-child,
-#leaderboard tbody tr:nth-child(3) td:first-child {
-  font-size: 17px;
-}
-.playoff-divider td{
-  border-bottom: 2px solid #22c55e;
-  padding: 0;
-  height: 6px;
-  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 640px){
+
+  h1{
+    font-size: 26px;
+  }
+
+  th, td{
+    padding: 10px 10px;
+    font-size: 13px;
+  }
+
+  section{
+    padding: 12px;
+  }
+
 }
