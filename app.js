@@ -36,16 +36,23 @@ async function load() {
   })).sort((a,b) => b.points - a.points);
 
   const tbody = document.querySelector("#leaderboard tbody");
-  tbody.innerHTML = "";
-  rows.forEach(r => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-  <td>${r.name}</td>
-  <td>${r.wins}</td>
-  <td>${r.games}</td>
-  <td>${r.points}</td>
-  <td>${r.winPct}</td>
-`;
+tbody.innerHTML = "";
+
+rows.forEach((r, i) => {
+  const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
+
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${medal}</td>
+    <td>${r.name}</td>
+    <td>${r.wins}</td>
+    <td>${r.games}</td>
+    <td>${r.points}</td>
+    <td>${r.winPct}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
 
     tbody.appendChild(tr);
   });
