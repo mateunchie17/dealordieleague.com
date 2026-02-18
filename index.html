@@ -4,107 +4,103 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Monopoly Deal League</title>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-<!-- =========================
-     TOP NAVIGATION
-========================= -->
-<nav class="top-nav">
-  <a class="nav-brand" href="./">🃏 Monopoly Deal League</a>
+  <!-- ======================
+        TOP NAV BAR
+  ======================= -->
 
-  <div class="nav-links">
-    <a class="nav-link active" href="./">Standings</a>
-    <a class="nav-link" href="./rules.html">Rule Book</a>
-    <a class="nav-link" href="./how-to-play.html">How to Play</a>
-  </div>
-</nav>
+  <nav class="top-nav">
 
+    <div class="nav-inner">
 
-<!-- =========================
-     HEADER
-========================= -->
-<header>
-  <h1>League Standings</h1>
-  <p id="updated">Loading...</p>
+      <div class="nav-logo">
+        🎲 Monopoly Deal League
+      </div>
 
-  <!-- Stats Bar -->
-  <div class="stats-bar" id="statsBar">
-    <div class="stat">
-      <div class="stat-label">Players</div>
-      <div class="stat-value" id="statPlayers">–</div>
+      <div class="nav-links">
+        <a class="nav-link active" href="./">Standings</a>
+        <a class="nav-link" href="./rules.html">Rule Book</a>
+        <a class="nav-link" href="./how-to-play.html">How to Play</a>
+      </div>
+
     </div>
 
-    <div class="stat">
-      <div class="stat-label">Games Logged</div>
-      <div class="stat-value" id="statGames">–</div>
-    </div>
-
-    <div class="stat">
-      <div class="stat-label">Current Leader</div>
-      <div class="stat-value" id="statLeader">–</div>
-    </div>
-  </div>
-</header>
+  </nav>
 
 
-<!-- =========================
-     MAIN CONTENT
-========================= -->
-<main>
+  <!-- ======================
+        HEADER
+  ======================= -->
 
-  <!-- Leaderboard -->
-  <section>
-    <h2>
-      Leaderboard
-      <span class="section-chip">🏆 Season Standings</span>
-    </h2>
-
-    <table id="leaderboard">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Player</th>
-          <th>Wins</th>
-          <th>Games</th>
-          <th>Points</th>
-          <th>Win %</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
+  <header>
+    <h1>Monopoly Deal League</h1>
+    <p class="subtitle">
+      2 points per win. Commissioner-controlled scoring.
+    </p>
+    <p id="updated">Loading...</p>
+  </header>
 
 
-  <!-- Game History -->
-  <section>
-    <h2>
-      Game History
-      <span class="section-chip">🧾 Last 25 Games</span>
-    </h2>
+  <!-- ======================
+        MAIN CONTENT
+  ======================= -->
 
-    <table id="history">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Winner</th>
-          <th>Players</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
+  <main>
 
-</main>
+    <section>
+
+      <h2>Leaderboard</h2>
+
+      <table id="leaderboard">
+
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Wins</th>
+            <th>Games</th>
+            <th>Points</th>
+            <th>Win %</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+
+      </table>
+
+    </section>
 
 
-<!-- =========================
-     SCRIPT
-========================= -->
-<script src="app.js"></script>
+    <section>
+
+      <h2>Game History</h2>
+
+      <table id="history">
+
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Winner</th>
+            <th>Players</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+
+      </table>
+
+    </section>
+
+  </main>
+
+
+  <script src="app.js"></script>
 
 </body>
 </html>
