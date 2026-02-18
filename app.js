@@ -39,7 +39,12 @@ async function load() {
       points: s.wins * 2,
       winPct: pct(s.wins, s.games),
     }))
-    .sort((a, b) => b.points - a.points);
+    .sort((a, b) =>
+  (b.points - a.points) ||
+  (parseFloat(b.winPct) - parseFloat(a.winPct)) ||
+  (b.wins - a.wins) ||
+  (b.games - a.games)
+);
 
   // Render leaderboard
   const tbody = document.querySelector("#leaderboard tbody");
