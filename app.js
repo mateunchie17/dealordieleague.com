@@ -52,24 +52,65 @@ async function load() {
         (b.games - a.games)
     );
 
-  // Render leaderboard
-  const tbody = document.querySelector("#leaderboard tbody");
-  tbody.innerHTML = "";
+// =========================
+// LEADERBOARD RENDER (with ties + playoff line)
+// =========================
 
-  rows.forEach((r, i) => {
-    const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
-
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${medal}</td>
-      <td>${r.name}</td>
-      <td>${r.wins}</td>
-      <td>${r.games}</td>
-      <td>${r.points}</td>
-      <td>${r.winPct}</td>
-    `;
-    tbody.appendChild(tr);
+const rows = Object.values(stats)
+  .map(s => ({
+    name: s.name,
+    wins: s.wins,
+    games: s.games,
+    points: s.wins * 2,
+    winPct: s.games ? (s.wins / s.games) : 0
+  }))
+  .sort((a, b) => {
+    if (b.points !== a.points) return b.points - a.points;
+    return b.winPct - a.winPct;
   });
+
+const tbody = document.querySelector("#leaderboard tbody");
+tbody.innerHTML = "";
+
+let currentRank = 0;
+let lastPoints = null;
+
+rows.forEach((r, i) => {
+
+  // Handle ties
+  if (r.points !== lastPoints) {
+    currentRank = i + 1;
+    lastPoints = r.points;
+  }
+
+  const medal =
+    currentRank === 1 ? "🥇" :
+    currentRank === 2 ? "🥈" :
+    currentRank === 3 ? "🥉" :
+    currentRank;
+
+  const tr = document.createElement("tr");
+
+  tr.innerHTML = `
+    <td>${medal}</td>
+    <td>${r.name}</td>
+    <td>${r.wins}</td>
+    <td>${r.games}</td>
+    <td>${r.points}</td>
+    <td>${(r.winPct * 100).toFixed(1)}%</td>
+  `;
+
+  tbody.appendChild(tr);
+
+  // Playoff cutoff line after 6th rank
+  if (currentRank === 6) {
+    const divider = document.createElement("tr");
+    divider.className = "playoff-divider";
+    divider.innerHTML = `<td colspan="6"></td>`;
+    tbody.appendChild(divider);
+  }
+
+});
 
   // --- Render game history ---
   const historyBody = document.querySelector("#history tbody");
