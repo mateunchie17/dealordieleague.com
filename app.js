@@ -39,7 +39,13 @@ async function load() {
   tbody.innerHTML = "";
   rows.forEach(r => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${r.name}</td><td>${r.wins}</td><td>${r.games}</td><td>${r.points}</td><td>${r.winPct}</td>`;
+    tr.innerHTML = `
+      <td>${r.name}</td>
+      <td>${r.wins}</td>
+      <td>${r.games}</td>
+      <td>${r.points}</td>
+      <td>${r.winPct}</td>
+    `;
     tbody.appendChild(tr);
   });
 
