@@ -1,4 +1,4 @@
-const DATA_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AY5xjrTYZnYTE4pfc_K9_4ULH4jtuaht2i7ZHQOzvpzkfQ-HbJqt521qvocdiTwxf252cx275MLF_--lzUQbcvgQpeFYjtFB-e9H2q8Q0KnGnzmRZJyrjRQZe3frnVhv8Y7ksOdgYJLXbgc7ELM_FW-_w11LyQNC2fZjbMlbbFD1P-buJQBH5floBX8JiFwjYlG4BDhdxmGLocrh4wUXmuZRDCxSzvV5sYSvduM1p9nYJCnVpt-wyTNCsTarx7UviP8Tk_Pcwy96cWGCbRKgHRhUtJG9JyHARiHL0C286sl4&lib=MC224wZixs_4RDNExT7UVFRaw35ay4lOA";
+const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
 
 function pct(wins, games) {
   if (!games) return "0.0%";
