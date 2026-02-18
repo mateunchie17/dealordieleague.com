@@ -1,13 +1,16 @@
 // Use your Apps Script Web App /exec URL here
 const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
 
-function pctNumber(wins, games) {
+// How many players qualify for playoffs
+const PLAYOFF_SPOTS = 6;
+
+function winPctNum(wins, games) {
   if (!games) return 0;
   return wins / games; // 0..1
 }
 
-function pctText(wins, games) {
-  return (pctNumber(wins, games) * 100).toFixed(1) + "%";
+function winPctText(wins, games) {
+  return (winPctNum(wins, games) * 100).toFixed(1) + "%";
 }
 
 async function load() {
@@ -45,11 +48,12 @@ async function load() {
   });
 
   // ----------------------------
-  // Build leaderboard rows
-  // Tie rules:
-  // - Rank determined by POINTS (wins * 2)
-  // - If points tie, same rank number
-  // - Within same points, show higher win% first
+  // LEADERBOARD
+  // Rules:
+  // - Sort by Points desc
+  // - If points tie, sort by Win% desc
+  // - Display rank ties by Points (same rank label for same points)
+  // - Playoff cutoff is based on POSITION (top 6 after tiebreak)
   // ----------------------------
   const leaderboardRows = Object.values(stats)
     .map((s) => ({
@@ -57,36 +61,32 @@ async function load() {
       wins: s.wins,
       games: s.games,
       points: s.wins * 2,
-      winPctNum: pctNumber(s.wins, s.games),
-      winPctText: pctText(s.wins, s.games),
+      winPctNum: winPctNum(s.wins, s.games),
+      winPctText: winPctText(s.wins, s.games),
     }))
     .sort((a, b) => {
       if (b.points !== a.points) return b.points - a.points;
       return b.winPctNum - a.winPctNum;
     });
 
-  // ----------------------------
-  // Render leaderboard with ties + playoff divider after 6th rank
-  // ----------------------------
   const leaderboardBody = document.querySelector("#leaderboard tbody");
   leaderboardBody.innerHTML = "";
 
-  let currentRank = 0;
+  let displayRank = 0;
   let lastPoints = null;
-  let playoffDividerInserted = false;
 
   leaderboardRows.forEach((r, i) => {
-    // ties based on points
+    // rank ties based on points
     if (r.points !== lastPoints) {
-      currentRank = i + 1;
+      displayRank = i + 1;
       lastPoints = r.points;
     }
 
     const rankLabel =
-      currentRank === 1 ? "🥇" :
-      currentRank === 2 ? "🥈" :
-      currentRank === 3 ? "🥉" :
-      String(currentRank);
+      displayRank === 1 ? "🥇" :
+      displayRank === 2 ? "🥈" :
+      displayRank === 3 ? "🥉" :
+      String(displayRank);
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -99,29 +99,26 @@ async function load() {
     `;
     leaderboardBody.appendChild(tr);
 
-    // Insert playoff line once, immediately after the last row that is rank 6.
-    // This ensures ties at 6th don't get a line in the middle of tied players.
-    const next = leaderboardRows[i + 1];
-    const nextRank = next ? (next.points !== r.points ? (i + 2) : currentRank) : null;
-
-    if (!playoffDividerInserted && currentRank === 6 && nextRank !== 6) {
+    // playoff cutoff based on POSITION (top N rows)
+    if (i === PLAYOFF_SPOTS - 1) {
       const divider = document.createElement("tr");
       divider.className = "playoff-divider";
-      divider.innerHTML = `<td colspan="6">Playoff cutoff (Top 6)</td>`;
+      divider.innerHTML = `<td colspan="6">Playoff cutoff (Top ${PLAYOFF_SPOTS})</td>`;
       leaderboardBody.appendChild(divider);
-      playoffDividerInserted = true;
     }
   });
 
   // ----------------------------
-  // Render game history (latest 25)
+  // GAME HISTORY (latest 25)
   // ----------------------------
   const historyBody = document.querySelector("#history tbody");
   historyBody.innerHTML = "";
 
+  // player_id -> name map
   const idToName = {};
   Object.keys(stats).forEach((pid) => (idToName[pid] = stats[pid].name));
 
+  // newest first
   const gamesSorted = (data.games || []).slice().sort((a, b) => {
     const da = new Date(a.date || 0).getTime();
     const db = new Date(b.date || 0).getTime();
