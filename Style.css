@@ -1,93 +1,39 @@
 :root{
-  /* San Diego sunset + ocean */
-  --bg: #070A12;
-  --sunset1: rgba(255, 77, 109, 0.28);
-  --sunset2: rgba(255, 179, 71, 0.22);
-  --ocean: rgba(0, 194, 255, 0.18);
-
-  /* Monopoly Deal-ish accents */
-  --red: #ff2d55;
-  --yellow: #ffcc00;
-  --green: #34d399;
-  --blue: #3b82f6;
-
-  --card: rgba(17, 24, 39, 0.78);
+  --bg: #0b0f17;
+  --card: #111827;
   --text: #e5e7eb;
-  --muted: #a1a1aa;
-  --line: rgba(255,255,255,0.12);
+  --muted: #9ca3af;
+  --line: rgba(255,255,255,0.10);
   --header: rgba(255,255,255,0.06);
 }
 
-*{ box-sizing: border-box; }
+* { box-sizing: border-box; }
 
 body{
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,0.20), transparent 60%),
+              radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,0.18), transparent 55%),
+              var(--bg);
   color: var(--text);
-  background:
-    radial-gradient(1200px 700px at 20% 0%, var(--sunset1), transparent 60%),
-    radial-gradient(900px 600px at 70% 10%, var(--sunset2), transparent 55%),
-    radial-gradient(1000px 650px at 70% 80%, var(--ocean), transparent 60%),
-    var(--bg);
 }
 
-.site-header{
+header{
   max-width: 980px;
-  margin: 34px auto 18px;
+  margin: 36px auto 18px;
   padding: 0 16px;
-}
-
-.brand{
-  padding: 18px 18px 16px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(255,45,85,0.10), rgba(59,130,246,0.08) 40%, rgba(52,211,153,0.06));
-  border: 1px solid var(--line);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.45);
-  backdrop-filter: blur(10px);
-}
-
-.brand-top{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.chip{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  color: var(--text);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-}
-
-.chip-sd{
-  background: rgba(0,194,255,0.08);
-  border-color: rgba(0,194,255,0.18);
 }
 
 h1{
   margin: 0 0 6px;
   font-size: 34px;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-}
-
-.subtitle{
-  margin: 0 0 10px;
-  color: var(--muted);
-  font-size: 14px;
+  letter-spacing: -0.02em;
 }
 
 #updated{
   margin: 0;
-  color: rgba(255,255,255,0.75);
-  font-size: 13px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 main{
@@ -99,56 +45,42 @@ main{
 }
 
 section{
-  background: var(--card);
+  background: rgba(17,24,39,0.85);
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   padding: 16px;
-  box-shadow: 0 12px 34px rgba(0,0,0,0.40);
-  backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
-}
-
-/* subtle “card edge” accent */
-section::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(255,45,85,0.18), rgba(255,204,0,0.12), rgba(52,211,153,0.10), rgba(59,130,246,0.12));
-  opacity: 0.10;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
 }
 
 h2{
   margin: 0 0 12px;
   font-size: 18px;
+  color: var(--text);
   letter-spacing: -0.01em;
-  position: relative;
 }
 
 table{
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-  border-radius: 14px;
-  position: relative;
+  border-radius: 12px;
 }
 
 thead th{
   position: sticky;
   top: 0;
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.70);
-  font-weight: 700;
+  background: var(--header);
+  color: var(--muted);
+  font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.08em;
 }
 
 th, td{
   padding: 12px 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.10);
+  border-bottom: 1px solid var(--line);
   text-align: left;
   font-size: 14px;
 }
@@ -158,7 +90,7 @@ tbody tr:nth-child(even){
 }
 
 tbody tr:hover{
-  background: rgba(255,204,0,0.06);
+  background: rgba(99,102,241,0.10);
 }
 
 td:nth-child(2),
@@ -176,12 +108,7 @@ thead th:nth-child(5){
   text-align: right;
 }
 
-/* Make the Leaderboard feel “Monopoly Deal” by accenting key columns */
-#leaderboard td:nth-child(2){ color: rgba(52,211,153,0.95); } /* Wins */
-#leaderboard td:nth-child(4){ color: rgba(255,204,0,0.95); } /* Points */
-
 @media (max-width: 640px){
   h1{ font-size: 26px; }
   th, td{ padding: 10px 10px; font-size: 13px; }
-  .brand{ padding: 14px; }
 }
