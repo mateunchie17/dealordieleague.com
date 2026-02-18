@@ -112,3 +112,20 @@ thead th:nth-child(5){
   h1{ font-size: 26px; }
   th, td{ padding: 10px 10px; font-size: 13px; }
 }
+/* Rank column */
+#leaderboard th:first-child,
+#leaderboard td:first-child {
+  width: 48px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Make top 3 rows slightly special */
+#leaderboard tbody tr:nth-child(1) td:first-child {
+  font-size: 18px;
+}
+
+#leaderboard tbody tr:nth-child(2) td:first-child,
+#leaderboard tbody tr:nth-child(3) td:first-child {
+  font-size: 17px;
+}
