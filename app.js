@@ -1,16 +1,22 @@
-// Use your Apps Script Web App /exec URL here (recommended for stability)
+// Use your Apps Script Web App /exec URL here
 const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
 
-function pct(wins, games) {
-  if (!games) return "0.0%";
-  return ((wins / games) * 100).toFixed(1) + "%";
+function pctNumber(wins, games) {
+  if (!games) return 0;
+  return wins / games; // 0..1
+}
+
+function pctText(wins, games) {
+  return (pctNumber(wins, games) * 100).toFixed(1) + "%";
 }
 
 async function load() {
   const res = await fetch(DATA_URL);
   const data = await res.json();
 
-  // Build base stats from Players sheet (starting totals)
+  // ----------------------------
+  // Build stats from Players tab
+  // ----------------------------
   const stats = {};
   (data.players || []).forEach((p) => {
     if (String(p.active).toLowerCase() === "false") return;
@@ -22,138 +28,131 @@ async function load() {
     };
   });
 
-  // Add logged Games on top of starting totals
+  // ----------------------------
+  // Apply Games tab (1 row = 1 game)
+  // date | winner_id | player_ids | notes
+  // ----------------------------
   (data.games || []).forEach((g) => {
     const winner = String(g.winner_id || "").trim();
 
-    // Everyone who played gets +1 game
+    // everyone who played gets +1 game
     (g.player_ids || []).forEach((pid) => {
       if (stats[pid]) stats[pid].games += 1;
     });
 
-    // Winner gets +1 win
+    // winner gets +1 win
     if (stats[winner]) stats[winner].wins += 1;
   });
 
-  // Build sorted leaderboard rows
-  const rows = Object.values(stats)
+  // ----------------------------
+  // Build leaderboard rows
+  // Tie rules:
+  // - Rank determined by POINTS (wins * 2)
+  // - If points tie, same rank number
+  // - Within same points, show higher win% first
+  // ----------------------------
+  const leaderboardRows = Object.values(stats)
     .map((s) => ({
       name: s.name,
       wins: s.wins,
       games: s.games,
       points: s.wins * 2,
-      winPct: pct(s.wins, s.games),
+      winPctNum: pctNumber(s.wins, s.games),
+      winPctText: pctText(s.wins, s.games),
     }))
-    .sort(
-      (a, b) =>
-        (b.points - a.points) ||
-        (parseFloat(b.winPct) - parseFloat(a.winPct)) ||
-        (b.wins - a.wins) ||
-        (b.games - a.games)
-    );
+    .sort((a, b) => {
+      if (b.points !== a.points) return b.points - a.points;
+      return b.winPctNum - a.winPctNum;
+    });
 
-// =========================
-// LEADERBOARD RENDER (with ties + playoff line)
-// =========================
+  // ----------------------------
+  // Render leaderboard with ties + playoff divider after 6th rank
+  // ----------------------------
+  const leaderboardBody = document.querySelector("#leaderboard tbody");
+  leaderboardBody.innerHTML = "";
 
-const rows = Object.values(stats)
-  .map(s => ({
-    name: s.name,
-    wins: s.wins,
-    games: s.games,
-    points: s.wins * 2,
-    winPct: s.games ? (s.wins / s.games) : 0
-  }))
-  .sort((a, b) => {
-    if (b.points !== a.points) return b.points - a.points;
-    return b.winPct - a.winPct;
+  let currentRank = 0;
+  let lastPoints = null;
+  let playoffDividerInserted = false;
+
+  leaderboardRows.forEach((r, i) => {
+    // ties based on points
+    if (r.points !== lastPoints) {
+      currentRank = i + 1;
+      lastPoints = r.points;
+    }
+
+    const rankLabel =
+      currentRank === 1 ? "🥇" :
+      currentRank === 2 ? "🥈" :
+      currentRank === 3 ? "🥉" :
+      String(currentRank);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${rankLabel}</td>
+      <td>${r.name}</td>
+      <td>${r.wins}</td>
+      <td>${r.games}</td>
+      <td>${r.points}</td>
+      <td>${r.winPctText}</td>
+    `;
+    leaderboardBody.appendChild(tr);
+
+    // Insert playoff line once, immediately after the last row that is rank 6.
+    // This ensures ties at 6th don't get a line in the middle of tied players.
+    const next = leaderboardRows[i + 1];
+    const nextRank = next ? (next.points !== r.points ? (i + 2) : currentRank) : null;
+
+    if (!playoffDividerInserted && currentRank === 6 && nextRank !== 6) {
+      const divider = document.createElement("tr");
+      divider.className = "playoff-divider";
+      divider.innerHTML = `<td colspan="6">Playoff cutoff (Top 6)</td>`;
+      leaderboardBody.appendChild(divider);
+      playoffDividerInserted = true;
+    }
   });
 
-const tbody = document.querySelector("#leaderboard tbody");
-tbody.innerHTML = "";
-
-let currentRank = 0;
-let lastPoints = null;
-
-rows.forEach((r, i) => {
-
-  // Handle ties
-  if (r.points !== lastPoints) {
-    currentRank = i + 1;
-    lastPoints = r.points;
-  }
-
-  const medal =
-    currentRank === 1 ? "🥇" :
-    currentRank === 2 ? "🥈" :
-    currentRank === 3 ? "🥉" :
-    currentRank;
-
-  const tr = document.createElement("tr");
-
-  tr.innerHTML = `
-    <td>${medal}</td>
-    <td>${r.name}</td>
-    <td>${r.wins}</td>
-    <td>${r.games}</td>
-    <td>${r.points}</td>
-    <td>${(r.winPct * 100).toFixed(1)}%</td>
-  `;
-
-  tbody.appendChild(tr);
-
-  // Playoff cutoff line after 6th rank
-  if (currentRank === 6) {
-    const divider = document.createElement("tr");
-    divider.className = "playoff-divider";
-    divider.innerHTML = `<td colspan="6"></td>`;
-    tbody.appendChild(divider);
-  }
-
-});
-
-  // --- Render game history ---
+  // ----------------------------
+  // Render game history (latest 25)
+  // ----------------------------
   const historyBody = document.querySelector("#history tbody");
   historyBody.innerHTML = "";
 
-  // Map player_id -> name
   const idToName = {};
-  Object.keys(stats).forEach((pid) => {
-    idToName[pid] = stats[pid].name;
-  });
+  Object.keys(stats).forEach((pid) => (idToName[pid] = stats[pid].name));
 
-  // newest first
   const gamesSorted = (data.games || []).slice().sort((a, b) => {
     const da = new Date(a.date || 0).getTime();
     const db = new Date(b.date || 0).getTime();
     return db - da;
   });
 
-  // OPTIONAL: show only last 25 games
   gamesSorted.slice(0, 25).forEach((g) => {
-    const tr = document.createElement("tr");
-
     const dateStr = g.date ? new Date(g.date).toLocaleString() : "";
     const winnerName = idToName[g.winner_id] || g.winner_id || "";
     const playersList = (g.player_ids || [])
       .map((pid) => idToName[pid] || pid)
       .join(", ");
 
+    const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${dateStr}</td>
       <td>${winnerName}</td>
       <td>${playersList}</td>
       <td>${g.notes || ""}</td>
     `;
-
     historyBody.appendChild(tr);
   });
 
-  // Updated timestamp
+  // ----------------------------
+  // Timestamp
+  // ----------------------------
   document.getElementById("updated").textContent =
     "Last updated: " + new Date().toLocaleString();
 }
 
+// Initial load + refresh loop
 load().catch((err) => {
   console.error(err);
   document.getElementById("updated").textContent = "Failed to load data";
