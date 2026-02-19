@@ -195,3 +195,72 @@ header img{
   object-fit: contain !important;
   display: block !important;
 }
+/* Header layout + logo sizing (applies to ALL pages) */
+header{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 14px 18px;
+  background: rgba(17,24,39,0.78);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+
+header .logo{
+  position: absolute;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+header .logo img{
+  height: 42px;
+  width: auto;
+  max-width: 64px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+header .brand{
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.nav-tabs{
+  display: flex;
+  gap: 14px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+}
+
+.nav-tabs a{
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-tabs a:hover{ color: var(--text); }
+
+.nav-tabs a.active{
+  background: #f59e0b;
+  color: #111827;
+}
+
+/* Players card grid container */
+.card-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
