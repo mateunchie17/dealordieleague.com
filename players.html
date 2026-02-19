@@ -3,54 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Players | Deal or Die</title>
-
-<link rel="stylesheet" href="/style.css?v=2" />
+  <title>Deal or Die League — Players</title>
+  <link rel="stylesheet" href="/style.css?v=10" />
+  <link rel="icon" href="data:,">
 </head>
 
 <body>
+  <!-- Top Nav -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/index.html">
+        <img class="brand-logo" src="/logo.png" alt="Deal or Die" />
+        <span class="brand-name">Deal or Die League</span>
+      </a>
 
-  <!-- NAV -->
-  <nav class="top-nav">
-    <div class="nav-container">
-
-      <div class="nav-left">
-        <a href="./" aria-label="Home">
-          <img src="logo.png" class="nav-logo-img" alt="Deal or Die Logo">
-        </a>
-      </div>
-
-      <div class="nav-center">
-        <a class="nav-link" href="./">Standings</a>
-        <a class="nav-link active" href="./players.html">Players</a>
-        <a class="nav-link" href="./rules.html">Rule Book</a>
-        <a class="nav-link" href="./how-to-play.html">How to Play</a>
-      </div>
-
-      <div class="nav-right"></div>
-
+      <nav class="nav">
+        <a class="nav-link" href="/index.html">Standings</a>
+        <a class="nav-link active" href="/players.html">Players</a>
+        <a class="nav-link" href="/rules.html">Rule Book</a>
+        <a class="nav-link" href="/howto.html">How to Play</a>
+      </nav>
     </div>
-  </nav>
+  </div>
 
-  <!-- HEADER -->
-  <header>
+  <header class="page-header">
     <h1>Players</h1>
-    <p class="subtitle">Baseball card view. Click a card for full profile.</p>
-    <p id="updated">Loading...</p>
+    <p class="sub">Baseball card view. Click a card for full profile.</p>
+    <p id="updated" class="updated">Loading…</p>
   </header>
 
-  <!-- MAIN -->
-  <main>
-    <section>
-      <div class="players-toolbar">
+  <main class="page">
+    <section class="panel">
+      <div class="panel-head">
         <div class="pill">Player Cards</div>
-        <div class="tiny">Sorted by Points (Win % tiebreak)</div>
+        <div class="panel-note">Sorted by Points (Win % tiebreak)</div>
       </div>
 
-      <div id="playersGrid" class="players-grid"></div>
+      <!-- THIS is the missing element that caused your error -->
+      <div id="cards" class="cards-grid"></div>
     </section>
   </main>
 
-<script src="/players.js?v=2"></script>
+  <script src="/players.js?v=10"></script>
 </body>
 </html>
