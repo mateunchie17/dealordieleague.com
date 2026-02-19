@@ -1,5 +1,5 @@
 // 1) IMPORTANT: paste the SAME JSON URL you use in app.js
-const DATA_URL = "PASTE_YOUR_SAME_JSON_URL_HERE";
+const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
 
 const QUOTES = {
   MATT: "When you come for the king, you best not miss",
