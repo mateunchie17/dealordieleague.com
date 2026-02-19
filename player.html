@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Player | Deal or Die</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="top-nav">
+    <div class="nav-container">
+
+      <div class="nav-left">
+        <a href="./" aria-label="Home">
+          <img src="logo.png" class="nav-logo-img" alt="Deal or Die Logo">
+        </a>
+      </div>
+
+      <div class="nav-center">
+        <a class="nav-link" href="./">Standings</a>
+        <a class="nav-link" href="./players.html">Players</a>
+        <a class="nav-link" href="./rules.html">Rule Book</a>
+        <a class="nav-link" href="./how-to-play.html">How to Play</a>
+      </div>
+
+      <div class="nav-right"></div>
+
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <div class="profile-header">
+      <div class="profile-title">
+        <h1 id="playerName">Player</h1>
+        <p class="subtitle" id="playerTag">Loading…</p>
+      </div>
+      <a class="btn-link" href="./players.html">← Back to Players</a>
+    </div>
+    <p id="updated">Loading...</p>
+  </header>
+
+  <main>
+    <section>
+      <div class="profile-grid">
+
+        <!-- LEFT: Baseball card -->
+        <div class="profile-card" id="profileCard"></div>
+
+        <!-- RIGHT: Rivalries + Quote -->
+        <div class="profile-side">
+          <div class="panel">
+            <h2>Quote / Signature Move</h2>
+            <p class="prose" id="playerQuote">—</p>
+          </div>
+
+          <div class="panel">
+            <h2>Rivalries (manual)</h2>
+            <ul class="rivalry-list" id="playerRivalries"></ul>
+            <p class="tiny">Edit these in <code>player.js</code>.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="player.js"></script>
+</body>
+</html>
