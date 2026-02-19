@@ -1,165 +1,147 @@
 // Use your Apps Script Web App /exec URL here
 const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
 
-// How many players qualify for playoffs
-const PLAYOFF_SPOTS = 6;
-
-function winPctNum(wins, games) {
-  if (!games) return 0;
-  return wins / games; // 0..1
-}
-
-function winPctText(wins, games) {
-  return (winPctNum(wins, games) * 100).toFixed(1) + "%";
+function pct(wins, games) {
+  if (!games) return "0.0%";
+  return ((wins / games) * 100).toFixed(1) + "%";
 }
 
 async function load() {
-  const res = await fetch(DATA_URL);
-  const data = await res.json();
+  try {
+    const res = await fetch(DATA_URL);
+    const data = await res.json();
 
-  // ----------------------------
-  // Build stats from Players tab
-  // ----------------------------
-  const stats = {};
-  (data.players || []).forEach((p) => {
-    if (String(p.active).toLowerCase() === "false") return;
+    const stats = {};
 
-    stats[p.player_id] = {
-      name: p.name,
-      wins: Number(p.starting_wins || 0),
-      games: Number(p.starting_games || 0),
-    };
-  });
+    // Initialize players
+    data.players.forEach(p => {
+      if (String(p.active).toLowerCase() === "false") return;
 
-  // ----------------------------
-  // Apply Games tab (1 row = 1 game)
-  // date | winner_id | player_ids | notes
-  // ----------------------------
-  (data.games || []).forEach((g) => {
-    const winner = String(g.winner_id || "").trim();
-
-    // everyone who played gets +1 game
-    (g.player_ids || []).forEach((pid) => {
-      if (stats[pid]) stats[pid].games += 1;
+      stats[p.player_id] = {
+        name: p.name,
+        wins: Number(p.starting_wins || 0),
+        games: Number(p.starting_games || 0)
+      };
     });
 
-    // winner gets +1 win
-    if (stats[winner]) stats[winner].wins += 1;
-  });
+    // Process games
+    data.games.forEach(g => {
+      const winner = g.winner_id;
 
-  // ----------------------------
-  // LEADERBOARD
-  // Rules:
-  // - Sort by Points desc
-  // - If points tie, sort by Win% desc
-  // - Display rank ties by Points (same rank label for same points)
-  // - Playoff cutoff is based on POSITION (top 6 after tiebreak)
-  // ----------------------------
-  const leaderboardRows = Object.values(stats)
-    .map((s) => ({
+      (g.player_ids || []).forEach(pid => {
+        if (stats[pid]) stats[pid].games += 1;
+      });
+
+      if (stats[winner]) stats[winner].wins += 1;
+    });
+
+    // Build rows
+    const rows = Object.values(stats).map(s => ({
       name: s.name,
       wins: s.wins,
       games: s.games,
       points: s.wins * 2,
-      winPctNum: winPctNum(s.wins, s.games),
-      winPctText: winPctText(s.wins, s.games),
-    }))
-    .sort((a, b) => {
+      winPct: Number(pct(s.wins, s.games).replace("%", "")),
+      winPctDisplay: pct(s.wins, s.games)
+    }));
+
+    // Sort
+    rows.sort((a, b) => {
       if (b.points !== a.points) return b.points - a.points;
-      return b.winPctNum - a.winPctNum;
+      if (b.winPct !== a.winPct) return b.winPct - a.winPct;
+      if (b.wins !== a.wins) return b.wins - a.wins;
+      return b.games - a.games;
     });
 
-  const leaderboardBody = document.querySelector("#leaderboard tbody");
-  leaderboardBody.innerHTML = "";
+    renderLeaderboard(rows);
+    renderHistory(data.games || []);
 
-  let displayRank = 0;
+    document.getElementById("updated").textContent =
+      "Last updated: " + new Date().toLocaleString();
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("updated").textContent = "Failed to load data";
+  }
+}
+
+
+function renderLeaderboard(rows) {
+  const tbody = document.querySelector("#leaderboard tbody");
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+
+  let currentRank = 0;
   let lastPoints = null;
+  let lastPct = null;
 
-  leaderboardRows.forEach((r, i) => {
-    // rank ties based on points
-    if (r.points !== lastPoints) {
-      displayRank = i + 1;
+  rows.forEach((r, i) => {
+
+    if (r.points !== lastPoints || r.winPct !== lastPct) {
+      currentRank = i + 1;
       lastPoints = r.points;
+      lastPct = r.winPct;
     }
 
-    const rankLabel =
-      displayRank === 1 ? "🥇" :
-      displayRank === 2 ? "🥈" :
-      displayRank === 3 ? "🥉" :
-      String(displayRank);
+    // Insert playoff divider after rank 6
+    if (currentRank === 7 && !document.querySelector(".playoffs-row")) {
+      const playoffRow = document.createElement("tr");
+      playoffRow.className = "playoffs-row";
+      playoffRow.innerHTML = `
+        <td colspan="6" class="playoffs-cell">🏆 PLAYOFFS (Top 6)</td>
+      `;
+      tbody.appendChild(playoffRow);
+    }
+
+    const medal =
+      currentRank === 1 ? "🥇" :
+      currentRank === 2 ? "🥈" :
+      currentRank === 3 ? "🥉" :
+      currentRank;
 
     const tr = document.createElement("tr");
+
     tr.innerHTML = `
-      <td>${rankLabel}</td>
+      <td class="num">${medal}</td>
       <td>${r.name}</td>
       <td>${r.wins}</td>
       <td>${r.games}</td>
       <td>${r.points}</td>
-      <td>${r.winPctText}</td>
+      <td>${r.winPctDisplay}</td>
     `;
-    leaderboardBody.appendChild(tr);
 
-    // playoff cutoff based on POSITION (top N rows)
-   if (i === PLAYOFF_SPOTS - 1) {
-  const divider = document.createElement("tr");
-  divider.className = "playoff-divider";
-
-  divider.innerHTML = `
-    <td colspan="6">
-      🏆 PLAYOFFS (Top ${PLAYOFF_SPOTS})
-    </td>
-  `;
-
-  leaderboardBody.appendChild(divider);
+    tbody.appendChild(tr);
+  });
 }
 
-  });
 
-  // ----------------------------
-  // GAME HISTORY (latest 25)
-  // ----------------------------
-  const historyBody = document.querySelector("#history tbody");
-  historyBody.innerHTML = "";
+function renderHistory(games) {
+  const tbody = document.querySelector("#history tbody");
+  if (!tbody) return;
 
-  // player_id -> name map
-  const idToName = {};
-  Object.keys(stats).forEach((pid) => (idToName[pid] = stats[pid].name));
+  tbody.innerHTML = "";
 
-  // newest first
-  const gamesSorted = (data.games || []).slice().sort((a, b) => {
-    const da = new Date(a.date || 0).getTime();
-    const db = new Date(b.date || 0).getTime();
-    return db - da;
-  });
+  games
+    .slice()
+    .reverse()
+    .forEach(g => {
 
-  gamesSorted.slice(0, 25).forEach((g) => {
-    const dateStr = g.date ? new Date(g.date).toLocaleString() : "";
-    const winnerName = idToName[g.winner_id] || g.winner_id || "";
-    const playersList = (g.player_ids || [])
-      .map((pid) => idToName[pid] || pid)
-      .join(", ");
+      const date = new Date(g.date).toLocaleDateString();
 
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${dateStr}</td>
-      <td>${winnerName}</td>
-      <td>${playersList}</td>
-      <td>${g.notes || ""}</td>
-    `;
-    historyBody.appendChild(tr);
-  });
+      const tr = document.createElement("tr");
 
-  // ----------------------------
-  // Timestamp
-  // ----------------------------
-  document.getElementById("updated").textContent =
-    "Last updated: " + new Date().toLocaleString();
+      tr.innerHTML = `
+        <td>${date}</td>
+        <td>${g.winner_id || ""}</td>
+        <td>${(g.player_ids || []).join(", ")}</td>
+        <td>${g.notes || ""}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
 }
 
-// Initial load + refresh loop
-load().catch((err) => {
-  console.error(err);
-  document.getElementById("updated").textContent = "Failed to load data";
-});
 
+load();
 setInterval(load, 30000);
