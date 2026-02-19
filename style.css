@@ -186,3 +186,12 @@ img{
   h1{ font-size:26px; }
   th, td{ padding:10px; font-size:13px; }
 }
+/* FINAL OVERRIDE: header images can never explode */
+header img{
+  height: 42px !important;
+  width: auto !important;
+  max-height: 42px !important;
+  max-width: 140px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
