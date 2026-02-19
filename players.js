@@ -1,5 +1,5 @@
 // deploy bump
-const DATA_URL = "PASTE_YOUR_SAME_JSON_URL_HERE";
+const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
 
 // Manual extras (you can edit anytime)
 const PLAYER_META = {
