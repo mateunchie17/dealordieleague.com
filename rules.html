@@ -1,108 +1,106 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deal or Die League — Rule Book</title>
+  <title>Rule Book · Deal or Die League</title>
   <link rel="stylesheet" href="style.css?v=11" />
-  <link rel="icon" href="data:,">
 </head>
 
 <body>
-  <!-- Top Nav -->
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="/index.html">
-        <img class="brand-logo" src="/logo.png" alt="Deal or Die" />
-        <span class="brand-name">Deal or Die League</span>
-      </a>
+  <header>
+    <a class="logo" href="index.html" aria-label="Deal or Die League Home">
+      <img src="logo.png" alt="Deal or Die League logo" />
+      <span class="brand">Deal or Die League</span>
+    </a>
 
-      <nav class="nav">
-        <a class="nav-link" href="/index.html">Standings</a>
-        <a class="nav-link" href="/players.html">Players</a>
-        <a class="nav-link active" href="/rules.html">Rule Book</a>
-        <a class="nav-link" href="/howto.html">How to Play</a>
-      </nav>
-    </div>
-  </div>
-
-  <header class="page-header">
-    <h1>Rule Book</h1>
-    <p class="sub">House rules for the Deal or Die League.</p>
+    <nav class="nav-tabs" aria-label="Primary navigation">
+      <a href="index.html">Standings</a>
+      <a href="players.html">Players</a>
+      <a class="active" href="rules.html">Rule Book</a>
+      <a href="howto.html">How to Play</a>
+    </nav>
   </header>
 
-  <main class="page">
-    <section class="panel">
-      <div class="panel-head">
-        <div class="pill">Game Play Rules</div>
-      </div>
+  <main>
+    <section>
+      <h1 style="margin:0 0 6px;">Rule Book</h1>
+      <p style="margin:0; color: var(--muted);">House rules for the league.</p>
+    </section>
 
-      <!-- Replace this section with your rules content -->
-      <div class="rules">
-        <h2>1. Setup &amp; Dealing</h2>
-        <ul>
-          <li>All players start with 5 cards.</li>
-          <li>The player to the left of the dealer begins the round.</li>
-          <li>That same player must shuffle the deck at the end of the round.</li>
-        </ul>
+    <section class="rich">
+      <h2>Game Play Rules</h2>
 
-        <h2>2. Turn Order &amp; Card Pickup</h2>
-        <ul>
-          <li>At the start of each turn, 2 cards must be picked up.</li>
-          <li>If a move is made before picking up the 2 cards, the pickup is voided.</li>
-          <li>After picking up cards, the player may play cards or bank cards.</li>
-          <li>Properties cannot be banked.</li>
-        </ul>
+      <h3>1. Setup &amp; Dealing</h3>
+      <ul>
+        <li>All players start with 5 cards.</li>
+        <li>The player to the left of the dealer begins the round.</li>
+        <li>That same player must shuffle the deck at the end of the round.</li>
+      </ul>
 
-        <h2>3. Hand Size Limit &amp; Discards</h2>
-        <ul>
-          <li>If a player has more than 7 cards at end of turn, other players randomly discard down to 7.</li>
-          <li>Discarded cards are placed into the middle of the deck.</li>
-        </ul>
+      <h3>2. Turn Order &amp; Card Pickup</h3>
+      <ul>
+        <li>At the start of each turn, 2 cards must be picked up.</li>
+        <li>If a move is made before picking up the 2 cards, the pickup is voided.</li>
+        <li>After picking up cards, the player may play cards or bank cards.</li>
+        <li>Properties cannot be banked.</li>
+      </ul>
 
-        <h2>4. Card Commitment &amp; Clarifications</h2>
-        <ul>
-          <li>Once your hand breaks contact with a card, that action is your official play.</li>
-          <li>For beginners, the group may decide whether to enforce this rule.</li>
-          <li>Rule clarifications are allowed if no strategic advantage is gained.</li>
-        </ul>
+      <h3>3. Hand Size Limit &amp; Discards</h3>
+      <ul>
+        <li>If a player has more than 7 cards in their hand at the end of their turn:</li>
+        <li>The other players at the table will randomly choose cards to discard until the hand contains no more than 7 cards.</li>
+        <li>Discarded cards are placed into the middle of the deck.</li>
+      </ul>
 
-        <h2>5. Special Cards &amp; Turn Exceptions</h2>
-        <ul>
-          <li>“Just Say No” does not consume a turn.</li>
-          <li>“Just Say No” only applies to the player using it.</li>
-          <li>Flipping a wild property to a new color counts as one turn.</li>
-        </ul>
+      <h3>4. Card Commitment &amp; Clarifications</h3>
+      <ul>
+        <li>During your turn, once your hand breaks contact with a card, that action is considered your official play.</li>
+        <li>For beginners, the group may decide whether to enforce this rule.</li>
+        <li>If rules clarification is needed and discussion happens before a move, the player may temporarily let the card leave their hand within reason and without gaining a strategic advantage.</li>
+      </ul>
 
-        <h2>6. Houses &amp; Hotels</h2>
-        <ul>
-          <li>Houses only after a complete set (excluding utilities/railroads).</li>
-          <li>Hotels may be placed on top of houses.</li>
-          <li>Once banked, houses/hotels remain banked.</li>
-          <li>If a house is given as value and there’s no valid place, it goes to bank.</li>
-        </ul>
+      <h3>5. Special Cards &amp; Turn Exceptions</h3>
+      <ul>
+        <li>Playing a “Just Say No” card does not consume a turn, regardless of when it is played.</li>
+        <li>“Just Say No” cards only apply to the player using them.</li>
+        <li>Flipping a wild property card to a new color counts as one turn.</li>
+      </ul>
 
-        <h2>7. Rent &amp; Action Card Rules</h2>
-        <ul>
-          <li>Double the Rent may be played before or after a rent card.</li>
-          <li>Strongly encouraged: verbalize your move beforehand.</li>
-        </ul>
+      <h3>6. Houses &amp; Hotels</h3>
+      <ul>
+        <li>Houses may only be played once a complete property set is formed (excluding utilities and railroads).</li>
+        <li>Once a house is placed, hotels may be placed on top.</li>
+        <li>Once a house or hotel is banked, it remains in the bank and cannot be used elsewhere.</li>
+        <li>If a house is given as monetary value and there is no legitimate place to put it, the house goes directly into the bank.</li>
+      </ul>
 
-        <h2>8. Colorless Wildcards</h2>
-        <ul>
-          <li>No monetary value; can’t be rent payment.</li>
-          <li>If not part of full set, can be taken via Sly Deal / Forced Deal.</li>
-          <li>Must attach to a legitimate property/utility.</li>
-          <li>If attached property is taken due to rent, wildcard stays same color and can’t charge rent unless part of legit property.</li>
-          <li>Can’t form a full set by itself.</li>
-        </ul>
+      <h3>7. Rent &amp; Action Card Rules</h3>
+      <ul>
+        <li>Double the Rent cards may be played before or after a rent card.</li>
+        <li>To avoid confusion, players are strongly encouraged to verbalize their move beforehand.</li>
+      </ul>
 
-        <h2>9. Card Pickup Errors</h2>
-        <ul>
-          <li>If extra card is unseen: place on top of deck.</li>
-          <li>If seen: randomly select 1–3 cards, reveal, and shuffle into middle of deck.</li>
-        </ul>
-      </div>
+      <h3>8. Colorless Wildcards</h3>
+      <ul>
+        <li>Colorless wildcards have no monetary value and cannot be used as rent payment.</li>
+        <li>If a colorless wildcard is not part of a full set, it may be taken using Sly Deal or Forced Deal.</li>
+        <li>Colorless wildcards cannot be played on their own and must be attached to a legitimate property or utility.</li>
+        <li>If the property attached to a colorless wildcard is taken due to rent:
+          <ul>
+            <li>The wildcard remains the same color.</li>
+            <li>The player may not use it to charge rent unless part of a legit property.</li>
+          </ul>
+        </li>
+        <li>Colorless wildcards cannot, by themselves, form an entire property set.</li>
+      </ul>
+
+      <h3>9. Card Pickup Errors</h3>
+      <ul>
+        <li>If a player accidentally takes too many cards:</li>
+        <li>If the extra card is unseen, it is placed on top of the deck.</li>
+        <li>If the player has seen all cards, the group will randomly select 1–3 cards, reveal it to the group, and shuffle it into the middle of the deck.</li>
+      </ul>
     </section>
   </main>
 </body>
