@@ -1,266 +1,54 @@
-:root{
-  --bg: #0b0f17;
-  --card: #111827;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --line: rgba(255,255,255,0.10);
-  --header: rgba(255,255,255,0.06);
-  --accent: #f59e0b;
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+  box-sizing: border-box;
 }
 
-*{ box-sizing:border-box; }
-
-body{
-  margin:0;
+body {
+  margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background:
-    radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,0.20), transparent 60%),
-    radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,0.18), transparent 55%),
-    var(--bg);
-  color:var(--text);
+  background: radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,0.20), transparent 60%),
+              radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,0.18), transparent 55%),
+              #0b0f17;
+  color: #e5e7eb;
 }
 
-/* ================= HEADER / NAV ================= */
+/* =========================
+   NAVBAR
+========================= */
 
-header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:12px 20px;
-  background:linear-gradient(90deg,#1f2937,#0f172a);
-  border-bottom:1px solid var(--line);
-}
-
-/* left logo container */
-.logo{
-  position:absolute;
-  left:20px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width: 60px;
-}
-
-/* HARD LOCK logo size (prevents huge logo on any page) */
-header .logo img{
-  height:42px !important;
-  width:auto !important;
-  max-height:42px !important;
-  max-width:120px !important;
-  object-fit:contain !important;
-  display:block !important;
-  border-radius:6px;
-}
-
-/* Tabs center */
-.nav-tabs{
-  display:flex;
-  gap:12px;
-  background:rgba(255,255,255,0.05);
-  padding:6px;
-  border-radius:999px;
-  backdrop-filter:blur(6px);
-}
-
-.nav-tabs a{
-  text-decoration:none;
-  color:var(--text);
-  padding:8px 16px;
-  border-radius:999px;
-  font-weight:600;
-  font-size:14px;
-  transition:0.2s;
-}
-
-.nav-tabs a.active{
-  background:var(--accent);
-  color:#0b0f17;
-}
-
-.nav-tabs a:hover{
-  background:rgba(255,255,255,0.08);
-}
-
-/* ================= PAGE LAYOUT ================= */
-
-main{
-  max-width:980px;
-  margin:24px auto 60px;
-  padding:0 16px;
-  display:grid;
-  gap:18px;
-}
-
-section{
-  background:rgba(17,24,39,0.85);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter:blur(8px);
-}
-
-h1{ margin:0 0 6px; font-size:34px; }
-h2{ margin:0 0 12px; font-size:18px; }
-
-#updated{
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* ================= TABLES ================= */
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  border-radius:12px;
-  overflow:hidden;
-}
-
-thead th{
-  background:var(--header);
-  color:var(--muted);
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:0.08em;
-  font-weight:600;
-}
-
-th, td{
-  padding:12px;
-  border-bottom:1px solid var(--line);
-  text-align:left;
-  font-size:14px;
-}
-
-td.num{ width:60px; font-weight:700; }
-
-td:nth-child(3),
-td:nth-child(4),
-td:nth-child(5),
-td:nth-child(6),
-thead th:nth-child(3),
-thead th:nth-child(4),
-thead th:nth-child(5),
-thead th:nth-child(6){
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-
-tbody tr:nth-child(even){ background:rgba(255,255,255,0.03); }
-tbody tr:hover{ background:rgba(99,102,241,0.10); }
-
-/* ================= PLAYOFF LINE ================= */
-
-.playoffs-row td{ padding:12px; }
-
-.playoffs-cell{
-  font-weight:700;
-  color:var(--accent);
-  background:rgba(245,158,11,0.10);
-  border-top:1px solid rgba(245,158,11,0.35);
-  border-bottom:1px solid rgba(245,158,11,0.35);
-  text-align:left !important;
-}
-
-/* ================= SAFETY: prevent random global img rules from breaking layout ================= */
-/* Only affects images NOT inside your logo */
-img{
-  max-width:100%;
-  height:auto;
-}
-
-/* ================= MOBILE ================= */
-
-@media (max-width:640px){
-  header{ padding:10px 12px; }
-  header .logo{ left:12px; }
-  header .logo img{
-    height:32px !important;
-    max-height:32px !important;
-    max-width:96px !important;
-  }
-  h1{ font-size:26px; }
-  th, td{ padding:10px; font-size:13px; }
-}
-/* FINAL OVERRIDE: header images can never explode */
-header img{
-  height: 42px !important;
-  width: auto !important;
-  max-height: 42px !important;
-  max-width: 140px !important;
-  object-fit: contain !important;
-  display: block !important;
-}
-/* Header layout + logo sizing (applies to ALL pages) */
-header{
-  position: sticky;
-  top: 0;
-  z-index: 50;
+.navbar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
-  padding: 14px 18px;
-  background: rgba(17,24,39,0.78);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(10px);
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: linear-gradient(90deg,#1f2937,#111827);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-header .logo{
-  position: absolute;
-  left: 18px;
+.logo-wrap {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--text);
-  text-decoration: none;
 }
 
-header .logo img{
+.logo-wrap img {
   height: 42px;
   width: auto;
-  max-width: 64px;
-  object-fit: contain;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
-header .brand{
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+.logo-text {
+  font-weight: 600;
+  font-size: 18px;
 }
 
-.nav-tabs{
+.nav-links {
   display: flex;
   gap: 14px;
-  padding: 6px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.03);
 }
 
-.nav-tabs a{
-  padding: 10px 14px;
-  border-radius: 999px;
-  color: var(--muted);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.nav-tabs a:hover{ color: var(--text); }
-
-.nav-tabs a.active{
-  background: #f59e0b;
-  color: #111827;
-}
-
-/* Players card grid container */
-.card-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-}
+.nav-links a {
+  color: #d1d5db
