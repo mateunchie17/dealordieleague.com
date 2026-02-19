@@ -1,72 +1,68 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deal or Die League — Standings</title>
-<link rel="stylesheet" href="style.css?v=11" />
-  <link rel="icon" href="data:,">
+  <title>Deal or Die League</title>
+  <link rel="stylesheet" href="style.css?v=11" />
 </head>
 
 <body>
-  <!-- Top Nav -->
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="/index.html">
-        <img class="brand-logo" src="/logo.png" alt="Deal or Die" />
-        <span class="brand-name">Deal or Die League</span>
-      </a>
+  <!-- TOP NAV -->
+  <header>
+    <a class="logo" href="index.html" aria-label="Deal or Die League Home">
+      <img src="logo.png" alt="Deal or Die League logo" />
+      <span class="brand">Deal or Die League</span>
+    </a>
 
-      <nav class="nav">
-        <a class="nav-link active" href="/index.html">Standings</a>
-        <a class="nav-link" href="/players.html">Players</a>
-        <a class="nav-link" href="/rules.html">Rule Book</a>
-        <a class="nav-link" href="/howto.html">How to Play</a>
-      </nav>
-    </div>
-  </div>
-
-  <header class="page-header">
-    <h1>Standings</h1>
-    <p class="sub">2 points per win. Commissioner-controlled scoring.</p>
-    <p id="updated" class="updated">Loading…</p>
+    <nav class="nav-tabs" aria-label="Primary navigation">
+      <a class="active" href="index.html">Standings</a>
+      <a href="players.html">Players</a>
+      <a href="rules.html">Rule Book</a>
+      <a href="howto.html">How to Play</a>
+    </nav>
   </header>
 
-  <main class="page">
-    <section class="panel">
-      <div class="panel-head">
-        <div class="pill">Leaderboard</div>
-        <div class="panel-note">Sorted by Points (Win % tiebreak)</div>
+  <!-- PAGE CONTENT -->
+  <main>
+    <section>
+      <h1 style="margin:0 0 6px;">Standings</h1>
+      <p style="margin:0; color: var(--muted);">
+        2 points per win. Commissioner-controlled scoring.
+        <span id="updated" style="margin-left:8px;">Loading...</span>
+      </p>
+    </section>
+
+    <section>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+        <h2 style="margin:0;">Leaderboard</h2>
+        <div style="color:var(--muted); font-size:13px;">Sorted by Points (Win % tiebreak)</div>
       </div>
 
       <table id="leaderboard">
         <thead>
           <tr>
-            <th class="num">#</th>
+            <th style="width:70px;">#</th>
             <th>Player</th>
-            <th class="num">Wins</th>
-            <th class="num">Games</th>
-            <th class="num">Points</th>
-            <th class="num">Win %</th>
+            <th>Wins</th>
+            <th>Games</th>
+            <th>Points</th>
+            <th>Win %</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <div class="pill">Game History</div>
-        <div class="panel-note">Latest games first</div>
-      </div>
-
+    <section>
+      <h2 style="margin:0 0 12px;">Game History</h2>
       <table id="history">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Winner</th>
+            <th style="width:160px;">Date</th>
+            <th style="width:180px;">Winner</th>
             <th>Players</th>
-            <th>Notes</th>
+            <th style="width:240px;">Notes</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -74,6 +70,6 @@
     </section>
   </main>
 
-  <script src="/app.js?v=11"></script>
+  <script src="app.js?v=11"></script>
 </body>
 </html>
