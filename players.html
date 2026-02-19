@@ -1,49 +1,48 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deal or Die League — Players</title>
- <link rel="stylesheet" href="style.css?v=11" />
-  <link rel="icon" href="data:,">
+  <title>Players · Deal or Die League</title>
+  <link rel="stylesheet" href="style.css?v=11" />
 </head>
 
 <body>
-  <!-- Top Nav -->
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="/index.html">
-        <img class="brand-logo" src="/logo.png" alt="Deal or Die" />
-        <span class="brand-name">Deal or Die League</span>
-      </a>
+  <header>
+    <a class="logo" href="index.html" aria-label="Deal or Die League Home">
+      <img src="logo.png" alt="Deal or Die League logo" />
+      <span class="brand">Deal or Die League</span>
+    </a>
 
-      <nav class="nav">
-        <a class="nav-link" href="/index.html">Standings</a>
-        <a class="nav-link active" href="/players.html">Players</a>
-        <a class="nav-link" href="/rules.html">Rule Book</a>
-        <a class="nav-link" href="/howto.html">How to Play</a>
-      </nav>
-    </div>
-  </div>
-
-  <header class="page-header">
-    <h1>Players</h1>
-    <p class="sub">Baseball card view. Click a card for full profile.</p>
-    <p id="updated" class="updated">Loading…</p>
+    <nav class="nav-tabs" aria-label="Primary navigation">
+      <a href="index.html">Standings</a>
+      <a class="active" href="players.html">Players</a>
+      <a href="rules.html">Rule Book</a>
+      <a href="howto.html">How to Play</a>
+    </nav>
   </header>
 
-  <main class="page">
-    <section class="panel">
-      <div class="panel-head">
-        <div class="pill">Player Cards</div>
-        <div class="panel-note">Sorted by Points (Win % tiebreak)</div>
+  <main>
+    <section>
+      <h1 style="margin:0 0 6px;">Players</h1>
+      <p style="margin:0; color: var(--muted);">Baseball card view. Click a card for full profile.</p>
+      <p id="updated" style="margin:10px 0 0; color: var(--muted);">Loading…</p>
+    </section>
+
+    <section>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--line); border-radius:999px; background: rgba(255,255,255,0.03);">
+            🏆 <strong>Player Cards</strong>
+          </span>
+        </div>
+        <div style="color:var(--muted); font-size:13px;">Sorted by Points (Win % tiebreak)</div>
       </div>
 
-      <!-- THIS is the missing element that caused your error -->
-      <div id="cards" class="cards-grid"></div>
+      <div id="cards" class="card-grid"></div>
     </section>
   </main>
 
-  <script src="/players.js?v=10"></script>
+  <script src="players.js?v=11"></script>
 </body>
 </html>
