@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Players | Deal or Die</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="top-nav">
+    <div class="nav-container">
+
+      <div class="nav-left">
+        <a href="./" aria-label="Home">
+          <img src="logo.png" class="nav-logo-img" alt="Deal or Die Logo">
+        </a>
+      </div>
+
+      <div class="nav-center">
+        <a class="nav-link" href="./">Standings</a>
+        <a class="nav-link active" href="./players.html">Players</a>
+        <a class="nav-link" href="./rules.html">Rule Book</a>
+        <a class="nav-link" href="./how-to-play.html">How to Play</a>
+      </div>
+
+      <div class="nav-right"></div>
+
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <h1>Players</h1>
+    <p class="subtitle">Baseball card view. Click a card for full profile.</p>
+    <p id="updated">Loading...</p>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <section>
+      <div class="players-toolbar">
+        <div class="pill">🏆 Season Cards</div>
+        <div class="tiny">Sorted by Points (Win % tiebreak)</div>
+      </div>
+
+      <div id="playersGrid" class="players-grid"></div>
+    </section>
+  </main>
+
+  <script src="players.js"></script>
+</body>
+</html>
