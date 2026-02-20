@@ -196,7 +196,7 @@ tbody tr:hover{ background:rgba(99,102,241,0.10); }
   text-decoration:none;
   color:inherit;
   transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  min-height:400px; /* reduced 10% */
+  min-height:360px; /* reduced 10% */
 }
 
 .player-card:hover{
@@ -245,7 +245,7 @@ tbody tr:hover{ background:rgba(99,102,241,0.10); }
 .player-photo{
   position:relative;
   width:100%;
-  height:160px; /* reduced 10% */
+  height:140px; /* reduced 10% */
   border-radius:12px;
   overflow:hidden;
   margin-bottom:12px;
