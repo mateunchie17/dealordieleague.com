@@ -1,709 +1,266 @@
+/* ===============================
+   ROOT COLORS
+================================ */
 :root{
-  --bg: #0b0f17;
-  --card: rgba(17,24,39,0.85);
-  --cardSolid: #111827;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --line: rgba(255,255,255,0.10);
-  --headerBg: rgba(17,24,39,0.78);
-  --tabBg: rgba(255,255,255,0.03);
-  --accent: #f59e0b; /* orange */
-  --accentText: #111827;
+  --bg:#0b0f17;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --line:rgba(255,255,255,0.10);
+  --accent:#f5a623;
 }
 
+/* ===============================
+   GLOBAL
+================================ */
 *{ box-sizing:border-box; }
 
-html, body{
-  height: 100%;
-}
-
 body{
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--text);
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text);
   background:
-    radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,0.20), transparent 60%),
-    radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,0.18), transparent 55%),
+    radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,0.18), transparent 60%),
+    radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,0.14), transparent 55%),
     var(--bg);
 }
 
-/* ====== ESPN-like Top Bar ====== */
+/* ===============================
+   HEADER / NAV (consistent on every page)
+================================ */
 header{
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: var(--headerBg);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 16px;
+  padding:10px 24px;
+  background:linear-gradient(90deg,#1e293b,#24324a);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 
-/* left logo area */
-header .logo{
-  position: absolute;
-  left: 18px;
-
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  text-decoration: none;
-  color: var(--text);
+/* Logo */
+a.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+  flex: 0 0 auto;
 }
 
-header .logo img{
-  height: 38px;     /* consistent small logo everywhere */
-  width: 38px;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+a.logo img{
+  height:40px !important;
+  width:auto !important;
+  display:block;
+  border-radius:10px;
 }
 
-header .brand{
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+.brand{
+  font-weight:800;
+  font-size:16px;
+  letter-spacing:-0.01em;
+  white-space:nowrap;
 }
 
-/* centered tabs */
+/* Tabs centered */
 .nav-tabs{
-  display: flex;
-  gap: 10px;
-  padding: 6px;
-
-  background: var(--tabBg);
-  border: 1px solid var(--line);
-  border-radius: 999px;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex:1 1 auto;
 }
 
 .nav-tabs a{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 10px 14px;
-  border-radius: 999px;
-
-  color: var(--text);
-  opacity: 0.85;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14px;
+  padding:8px 16px;
+  border-radius:999px;
+  text-decoration:none;
+  color:var(--text);
+  font-size:14px;
+  background:rgba(255,255,255,0.06);
+  transition:.2s;
+  white-space:nowrap;
 }
 
-.nav-tabs a:hover{
-  opacity: 1;
-}
+.nav-tabs a:hover{ background:rgba(255,255,255,0.12); }
 
 .nav-tabs a.active{
-  background: var(--accent);
-  color: var(--accentText);
-  opacity: 1;
+  background:var(--accent);
+  color:#0b0f17;
+  font-weight:800;
 }
 
-/* ====== Page layout ====== */
+/* ===============================
+   MAIN / SECTIONS
+================================ */
 main{
-  max-width: 980px;
-  margin: 26px auto 60px;
-  padding: 0 16px;
-
-  display: grid;
-  gap: 18px;
+  max-width:1100px;
+  margin:20px auto 60px;
+  padding:0 16px;
+  display:grid;
+  gap:18px;
 }
 
-/* Generic "card" sections */
 section{
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 16px;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(8px);
+  background:rgba(17,24,39,0.85);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter:blur(8px);
 }
 
-h1{
-  margin: 0 0 6px;
-  font-size: 40px;
-  letter-spacing: -0.02em;
-}
-
-.subhead{
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-}
+h1{ margin:0 0 6px; font-size:32px; }
+h2{ margin:0 0 12px; font-size:18px; }
 
 #updated{
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
+  color:var(--muted);
+  font-size:14px;
 }
 
-/* ====== Tables ====== */
-.table-head{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.table-title{
-  font-weight: 800;
-  font-size: 18px;
-}
-
-.table-meta{
-  color: var(--muted);
-  font-size: 13px;
-}
-
+/* ===============================
+   TABLES (scoped so history doesn't get wrecked)
+================================ */
 table{
-  width: 100%;
-  border-collapse: collapse;
-  border-radius: 12px;
-  overflow: hidden;
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+  border-radius:12px;
 }
 
 thead th{
-  background: rgba(255,255,255,0.06);
-  color: var(--muted);
-  font-weight: 800;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 12px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--line);
+  background:rgba(255,255,255,0.05);
+  color:var(--muted);
+  font-weight:700;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
 }
 
-tbody td{
-  padding: 12px 12px;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
+th,td{
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  font-size:14px;
 }
 
-tbody tr:nth-child(even){
-  background: rgba(255,255,255,0.03);
+tbody tr:nth-child(even){ background:rgba(255,255,255,0.03); }
+tbody tr:hover{ background:rgba(99,102,241,0.10); }
+
+/* Leaderboard alignment ONLY */
+#leaderboard td:nth-child(1){ width:70px; }
+#leaderboard td:nth-child(2){ text-align:left; }
+#leaderboard td:nth-child(n+3){
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+#leaderboard thead th:nth-child(n+3){ text-align:right; }
+
+/* History table stays readable (no forced right-align on notes/players) */
+#history td, #history th{ text-align:left; }
+#history td:nth-child(1){ width:160px; }
+#history td:nth-child(2){ width:180px; }
+#history td:nth-child(4){ width:240px; }
+
+/* Playoffs divider: support BOTH styles */
+.playoffs-row td.playoffs-cell,
+.playoff-divider td{
+  background:rgba(245,166,35,0.15);
+  border-top:2px solid var(--accent);
+  border-bottom:2px solid var(--accent);
+  color:var(--accent);
+  font-weight:900;
+  text-align:center !important;
 }
 
-tbody tr:hover{
-  background: rgba(99,102,241,0.10);
-}
-
-/* numeric columns right aligned */
-td.num, th.num{
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-/* playoffs row style */
-tr.playoffs-row td{
-  background: rgba(245,158,11,0.13);
-  color: #ffd79a;
-  font-weight: 900;
-  border-bottom: 1px solid rgba(245,158,11,0.35);
-}
-
-/* ====== Players cards (if needed) ====== */
-.card-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-}
-
-@media (max-width: 720px){
-  header{
-    height: 60px;
-  }
-  header .brand{
-    display:none; /* cleaner on small screens */
-  }
-  h1{
-    font-size: 30px;
-  }
-}
-/* =========================
-   PATCH: lock logo size + fix player cards
-   (paste at VERY BOTTOM of style.css)
-========================= */
-
-/* --- 1) LOGO: never huge again --- */
-/* Targets logo images across pages even if markup differs */
-header img,
-nav img,
-.navbar img,
-.topbar img,
-.site-header img,
-a img,
-img#logo,
-img.logo,
-img.site-logo,
-img[alt*="logo" i],
-img[src*="logo" i] {
-  max-height: 44px !important;
-  height: 44px !important;
-  width: auto !important;
-  object-fit: contain !important;
-}
-
-/* If your logo is inside a link, keep it tight */
-header a,
-nav a,
-.navbar a,
-.topbar a {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* --- 2) PLAYER CARDS: stop looking like raw links --- */
-/* If the card is an <a>, remove default link styling */
-#players a,
-#playersGrid a,
-#playerCards a,
-.cards a,
-.cardGrid a,
-.grid a {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-/* Make the player cards render like actual cards even if they are <a> tags */
-#playersGrid a,
-#playerCards a,
-.cards a,
-.cardGrid a,
-.grid a {
-  display: block;
-  border-radius: 16px;
-  background: rgba(17,24,39,0.82);
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  padding: 14px;
-  backdrop-filter: blur(8px);
-}
-
-/* Grid layout for cards (covers common container IDs/classes) */
-#playersGrid,
-#playerCards,
-.cards,
-.cardGrid,
-.grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-/* Small stat pills (if you use them) */
-.stat,
-.pill,
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-  font-variant-numeric: tabular-nums;
-}
-/* =========================
-   FIX: logo sizing + player cards layout
-   (paste at VERY BOTTOM of style.css)
-========================= */
-
-/* --- Logo: lock size across ALL pages --- */
-header a.logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-
-header a.logo img {
-  height: 44px !important;      /* ~small corner logo */
-  width: 44px !important;
-  object-fit: cover !important;
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-}
-
-/* Make sure brand text doesn’t turn into a giant link style */
-header a.logo .brand {
-  color: var(--text);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-/* --- Player Cards Grid --- */
-#cards.card-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-/* If cards are rendered as <a> tags, remove default link styling */
-#cards.card-grid a {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-/* Card shell: works for <a> or <div> cards */
-#cards.card-grid > a,
-#cards.card-grid > div {
-  display: block;
-  border-radius: 18px;
-  background: rgba(17,24,39,0.82);
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  padding: 14px;
-  backdrop-filter: blur(10px);
-  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
-}
-
-/* Hover: make it feel clickable */
-#cards.card-grid > a:hover,
-#cards.card-grid > div:hover {
-  transform: translateY(-2px);
-  border-color: rgba(245,158,11,0.35); /* subtle orange */
-  background: rgba(17,24,39,0.92);
-}
-
-/* Any headings/text inside cards should not look like links */
-#cards.card-grid h3,
-#cards.card-grid h4,
-#cards.card-grid strong,
-#cards.card-grid p,
-#cards.card-grid span,
-#cards.card-grid small,
-#cards.card-grid div {
-  color: inherit;
-}
-
-/* Optional: if you have stat “pills” inside cards */
-#cards .stat-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
-
-#cards .stat-pill {
-  border-radius: 14px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.10);
-  padding: 10px 8px;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
-#cards .stat-pill .k {
-  display: block;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-#cards .stat-pill .v {
-  display: block;
-  margin-top: 2px;
-  font-weight: 800;
-  font-size: 16px;
-  color: var(--text);
-}
-/* =========================
-   PLAYER CARD UPGRADE (cooler cards)
-   Paste at VERY BOTTOM of style.css
-========================= */
-
-:root{
-  --accent-gold: #f59e0b;
-  --accent-teal: #22c55e;
-  --accent-sd: #38bdf8;
-  --cardTop: rgba(255,255,255,0.06);
-  --cardEdge: rgba(255,255,255,0.10);
-}
-
-/* Grid: a little more breathing room */
+/* ===============================
+   PLAYER CARDS (3 per row, taller)
+================================ */
 #cards.card-grid{
-  gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:20px;
+  margin-top:10px;
 }
 
-/* Card wrapper (works whether you render <a> or <div>) */
-#cards.card-grid > a,
-#cards.card-grid > div{
-  position: relative;
-  overflow: hidden;
-  padding: 16px 16px 14px;
-  border-radius: 18px;
-  border: 1px solid var(--cardEdge);
-  background:
-    radial-gradient(900px 240px at 15% 0%, rgba(245,158,11,0.18), transparent 55%),
-    radial-gradient(900px 240px at 90% 20%, rgba(56,189,248,0.14), transparent 55%),
-    rgba(17,24,39,0.82);
-  box-shadow: 0 16px 50px rgba(0,0,0,0.45);
-  backdrop-filter: blur(10px);
-  transform: translateZ(0);
+/* Responsive */
+@media (max-width: 980px){
+  #cards.card-grid{ grid-template-columns:repeat(2, 1fr); }
+}
+@media (max-width: 640px){
+  #cards.card-grid{ grid-template-columns:1fr; }
 }
 
-/* Thin top “foil” strip */
-#cards.card-grid > a::before,
-#cards.card-grid > div::before{
-  content:"";
-  position:absolute;
-  left:0; right:0; top:0;
-  height: 46px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
-  opacity: 0.55;
-  pointer-events:none;
-}
-
-/* Hover */
-#cards.card-grid > a:hover,
-#cards.card-grid > div:hover{
-  transform: translateY(-2px);
-  border-color: rgba(245,158,11,0.35);
-}
-
-/* If your cards are links, kill link look */
-#cards.card-grid a{
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-/* ----- Typography hierarchy ----- */
-/* This targets the first few text lines in your current layout without needing JS changes */
-
-/* Rank line (ex: #7) */
-#cards.card-grid > a > :first-child,
-#cards.card-grid > div > :first-child{
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  color: rgba(255,255,255,0.92);
-  opacity: 0.95;
-}
-
-/* Player name line (usually the 2nd line) */
-#cards.card-grid > a > :nth-child(2),
-#cards.card-grid > div > :nth-child(2){
-  margin-top: 2px;
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: rgba(255,255,255,0.98);
-}
-
-/* Player ID line (usually 3rd line) */
-#cards.card-grid > a > :nth-child(3),
-#cards.card-grid > div > :nth-child(3){
-  margin-top: 1px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-}
-
-/* “DEAL OR DIE” line */
-#cards.card-grid > a > :nth-child(4),
-#cards.card-grid > div > :nth-child(4){
-  margin-top: 10px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(245,158,11,0.95);
-}
-
-/* ----- Stats: convert pills into labeled mini-panels ----- */
-/* If your stats are currently individual pill elements, this will still make them nicer. */
-#cards .stat-row{
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
-
-#cards .stat-pill{
-  border-radius: 14px;
-  padding: 10px 8px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.05);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
-#cards .stat-pill .k{
-  display:block;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-}
-
-#cards .stat-pill .v{
-  display:block;
-  margin-top: 2px;
-  font-size: 16px;
-  font-weight: 900;
-  color: rgba(255,255,255,0.95);
-}
-
-/* If your stats are not in .stat-row/.stat-pill yet, at least make existing “pill” spans nicer */
-#cards .pill,
-#cards .tag,
-#cards .badge{
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  padding: 6px 10px;
-  font-weight: 800;
-  color: rgba(255,255,255,0.90);
-}
-
-/* Make “WIN%” pill feel special if present */
-#cards .pill.win,
-#cards .badge.win,
-#cards .tag.win{
-  border-color: rgba(56,189,248,0.30);
-  background: rgba(56,189,248,0.10);
-}
-
-/* ----- Quote styling ----- */
-#cards .quote,
-#cards blockquote{
-  margin: 12px 0 0;
-  padding-left: 12px;
-  border-left: 3px solid rgba(245,158,11,0.75);
-  color: rgba(255,255,255,0.85);
-  font-style: italic;
-  line-height: 1.25;
-}
-
-/* If quote is just a plain <p> at the end, this helps */
-#cards.card-grid > a p:last-child,
-#cards.card-grid > div p:last-child{
-  margin-top: 12px;
-  padding-left: 12px;
-  border-left: 3px solid rgba(245,158,11,0.75);
-  color: rgba(255,255,255,0.85);
-  font-style: italic;
-}
-
-/* ----- Rank flair: top 3 glow (if you add .rank-1/.rank-2/.rank-3 to cards later) ----- */
-#cards .rank-1{ border-color: rgba(245,158,11,0.55); box-shadow: 0 18px 60px rgba(245,158,11,0.12), 0 16px 50px rgba(0,0,0,0.45); }
-#cards .rank-2{ border-color: rgba(148,163,184,0.55); }
-#cards .rank-3{ border-color: rgba(249,115,22,0.45); }
-
-/* Mobile spacing */
-@media (max-width: 560px){
-  #cards.card-grid{ grid-template-columns: 1fr; }
-}
-/* =========================
-   PLAYER CARDS (premium look)
-   Paste at BOTTOM of style.css
-========================= */
-
+/* Card wrapper */
 .player-card{
-  position: relative;
-  overflow: hidden;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background:
-    radial-gradient(900px 240px at 15% 0%, rgba(245,158,11,0.16), transparent 55%),
-    radial-gradient(900px 240px at 90% 20%, rgba(56,189,248,0.14), transparent 55%),
-    rgba(17,24,39,0.78);
-  box-shadow: 0 18px 55px rgba(0,0,0,0.45);
-  backdrop-filter: blur(10px);
-  padding: 16px;
+  display:block;
+  background:linear-gradient(180deg, rgba(25,35,60,0.95), rgba(18,25,45,0.95));
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:18px;
+  padding:16px;
+  text-decoration:none;
+  color:inherit;
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  min-height:440px; /* taller */
 }
-
 .player-card:hover{
-  transform: translateY(-2px);
-  border-color: rgba(245,158,11,0.28);
+  transform:translateY(-4px);
+  border-color: rgba(245,166,35,0.28);
+  box-shadow:0 12px 30px rgba(0,0,0,0.45);
 }
 
-/* Top strip */
-.player-card::before{
-  content:"";
-  position:absolute;
-  left:0; right:0; top:0;
-  height: 44px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
-  opacity: 0.55;
-  pointer-events:none;
-}
-
-/* Header row */
+/* Top area */
 .card-top{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap:10px;
+  margin-bottom:10px;
 }
-
 .rank-pill{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width: 44px;
-  height: 34px;
-  padding: 0 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  font-weight: 900;
+  background:rgba(245,166,35,0.16);
+  border:1px solid rgba(245,166,35,0.42);
+  padding:4px 10px;
+  border-radius:10px;
+  font-weight:900;
+  font-size:13px;
   font-variant-numeric: tabular-nums;
 }
-
-.name-block{
-  flex: 1;
-  min-width: 0;
-  text-align: left;
-}
-
+.name-block{ display:flex; flex-direction:column; min-width:0; }
 .player-name{
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:-0.02em;
+  line-height:1.1;
 }
-
 .player-id{
-  margin-top: 2px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:.10em;
+  font-weight:800;
+  text-transform:uppercase;
 }
 
-/* Photo zone */
+/* Photo area */
 .player-photo{
-  height: 92px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
-    radial-gradient(900px 220px at 20% 20%, rgba(34,197,94,0.16), transparent 50%),
-    radial-gradient(900px 220px at 90% 20%, rgba(245,158,11,0.16), transparent 50%),
-    rgba(0,0,0,0.20);
+  position:relative;
+  width:100%;
+  height:180px; /* taller */
+  border-radius:12px;
   overflow:hidden;
-  margin-bottom: 12px;
-  position: relative;
+  margin-bottom:12px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(245,166,35,0.25), transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(56,189,248,0.18), transparent 60%);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.player-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.90;
+  display:block;
 }
 
 .photo-overlay{
@@ -711,98 +268,100 @@ header a.logo .brand {
   inset:0;
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
-  padding: 10px 12px;
+  justify-content:flex-end;
+  padding:10px;
+  background:linear-gradient(to top, rgba(0,0,0,0.55), transparent);
 }
 
 .overlay-title{
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.72);
+  font-size:11px;
+  letter-spacing:.16em;
+  opacity:.85;
+  margin-bottom:6px;
+  font-weight:900;
 }
 
-/* Legend instead of mystery boxes */
 .prop-legend{
   display:flex;
   align-items:center;
-  gap: 8px;
-  flex-wrap: wrap;
-  font-size: 11px;
-  color: rgba(255,255,255,0.72);
+  gap:6px;
+  font-size:10px;
+  opacity:.85;
+  flex-wrap:wrap;
 }
-
-.prop-legend .dot{
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  display:inline-block;
-  border: 1px solid rgba(255,255,255,0.20);
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:3px;
+  border:1px solid rgba(255,255,255,0.20);
 }
-.prop-legend .lbl{
-  margin-right: 10px;
-  color: rgba(255,255,255,0.62);
-  font-weight: 700;
-}
+.dot.orange{ background:#f59e0b; }
+.dot.blue{ background:#3b82f6; }
+.dot.green{ background:#22c55e; }
+.lbl{ color: rgba(255,255,255,0.70); font-weight:800; margin-right:10px; }
 
-.dot.orange{ background: rgba(245,158,11,0.95); }
-.dot.blue{ background: rgba(56,189,248,0.95); }
-.dot.green{ background: rgba(34,197,94,0.95); }
-
-/* Stats row */
+/* Stats */
 .stats{
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 2px;
+  grid-template-columns:repeat(4, 1fr);
+  gap:8px;
+  margin-bottom:10px;
 }
-
 .stat{
-  border-radius: 14px;
-  padding: 10px 8px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.05);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-  text-align: center;
-  font-variant-numeric: tabular-nums;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:10px 8px;
+  text-align:center;
+  font-variant-numeric:tabular-nums;
 }
-
 .stat .k{
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:900;
 }
-
 .stat .v{
-  margin-top: 2px;
-  font-size: 16px;
-  font-weight: 900;
-  color: rgba(255,255,255,0.95);
+  font-size:16px;
+  font-weight:900;
 }
-
 .stat.win{
-  border-color: rgba(56,189,248,0.30);
-  background: rgba(56,189,248,0.10);
+  background:rgba(56,189,248,0.10);
+  border-color:rgba(56,189,248,0.30);
 }
 
 /* Quote */
 .quote{
-  margin-top: 12px;
-  padding-left: 12px;
-  border-left: 3px solid rgba(245,158,11,0.75);
-  color: rgba(255,255,255,0.86);
-  font-style: italic;
-  line-height: 1.25;
+  margin-top:8px;
+  font-size:13px;
+  font-style:italic;
+  opacity:.92;
+  line-height:1.4;
+  padding-left: 10px;
+  border-left: 3px solid rgba(245,166,35,0.70);
 }
 
-/* Top 3 glow */
-.player-card.rank-1{ border-color: rgba(245,158,11,0.55); box-shadow: 0 18px 60px rgba(245,158,11,0.12), 0 18px 55px rgba(0,0,0,0.45); }
-.player-card.rank-2{ border-color: rgba(148,163,184,0.55); }
-.player-card.rank-3{ border-color: rgba(249,115,22,0.45); }
+/* Tighten stats on small screens */
+@media (max-width: 640px){
+  .stats{ grid-template-columns:repeat(2, 1fr); }
+}
 
-@media (max-width: 560px){
-  .stats{ grid-template-columns: repeat(2, 1fr); }
+/* ===============================
+   MOBILE HEADER BEHAVIOR (does NOT enlarge logo)
+================================ */
+@media (max-width: 720px){
+  header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .nav-tabs{
+    justify-content:flex-start;
+    flex-wrap:wrap;
+  }
+  a.logo img{
+    height:34px !important;
+  }
+  h1{ font-size:24px; }
 }
