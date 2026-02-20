@@ -230,3 +230,88 @@ tr.playoffs-row td{
     font-size: 30px;
   }
 }
+/* =========================
+   PATCH: lock logo size + fix player cards
+   (paste at VERY BOTTOM of style.css)
+========================= */
+
+/* --- 1) LOGO: never huge again --- */
+/* Targets logo images across pages even if markup differs */
+header img,
+nav img,
+.navbar img,
+.topbar img,
+.site-header img,
+a img,
+img#logo,
+img.logo,
+img.site-logo,
+img[alt*="logo" i],
+img[src*="logo" i] {
+  max-height: 44px !important;
+  height: 44px !important;
+  width: auto !important;
+  object-fit: contain !important;
+}
+
+/* If your logo is inside a link, keep it tight */
+header a,
+nav a,
+.navbar a,
+.topbar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* --- 2) PLAYER CARDS: stop looking like raw links --- */
+/* If the card is an <a>, remove default link styling */
+#players a,
+#playersGrid a,
+#playerCards a,
+.cards a,
+.cardGrid a,
+.grid a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+/* Make the player cards render like actual cards even if they are <a> tags */
+#playersGrid a,
+#playerCards a,
+.cards a,
+.cardGrid a,
+.grid a {
+  display: block;
+  border-radius: 16px;
+  background: rgba(17,24,39,0.82);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  padding: 14px;
+  backdrop-filter: blur(8px);
+}
+
+/* Grid layout for cards (covers common container IDs/classes) */
+#playersGrid,
+#playerCards,
+.cards,
+.cardGrid,
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* Small stat pills (if you use them) */
+.stat,
+.pill,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  font-variant-numeric: tabular-nums;
+}
