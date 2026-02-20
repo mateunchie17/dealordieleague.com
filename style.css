@@ -315,3 +315,108 @@ nav a,
   border: 1px solid rgba(255,255,255,0.10);
   font-variant-numeric: tabular-nums;
 }
+/* =========================
+   FIX: logo sizing + player cards layout
+   (paste at VERY BOTTOM of style.css)
+========================= */
+
+/* --- Logo: lock size across ALL pages --- */
+header a.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+header a.logo img {
+  height: 44px !important;      /* ~small corner logo */
+  width: 44px !important;
+  object-fit: cover !important;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* Make sure brand text doesn’t turn into a giant link style */
+header a.logo .brand {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* --- Player Cards Grid --- */
+#cards.card-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* If cards are rendered as <a> tags, remove default link styling */
+#cards.card-grid a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+/* Card shell: works for <a> or <div> cards */
+#cards.card-grid > a,
+#cards.card-grid > div {
+  display: block;
+  border-radius: 18px;
+  background: rgba(17,24,39,0.82);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  padding: 14px;
+  backdrop-filter: blur(10px);
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+/* Hover: make it feel clickable */
+#cards.card-grid > a:hover,
+#cards.card-grid > div:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245,158,11,0.35); /* subtle orange */
+  background: rgba(17,24,39,0.92);
+}
+
+/* Any headings/text inside cards should not look like links */
+#cards.card-grid h3,
+#cards.card-grid h4,
+#cards.card-grid strong,
+#cards.card-grid p,
+#cards.card-grid span,
+#cards.card-grid small,
+#cards.card-grid div {
+  color: inherit;
+}
+
+/* Optional: if you have stat “pills” inside cards */
+#cards .stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#cards .stat-pill {
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  padding: 10px 8px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+#cards .stat-pill .k {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#cards .stat-pill .v {
+  display: block;
+  margin-top: 2px;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text);
+}
