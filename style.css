@@ -420,3 +420,194 @@ header a.logo .brand {
   font-size: 16px;
   color: var(--text);
 }
+/* =========================
+   PLAYER CARD UPGRADE (cooler cards)
+   Paste at VERY BOTTOM of style.css
+========================= */
+
+:root{
+  --accent-gold: #f59e0b;
+  --accent-teal: #22c55e;
+  --accent-sd: #38bdf8;
+  --cardTop: rgba(255,255,255,0.06);
+  --cardEdge: rgba(255,255,255,0.10);
+}
+
+/* Grid: a little more breathing room */
+#cards.card-grid{
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Card wrapper (works whether you render <a> or <div>) */
+#cards.card-grid > a,
+#cards.card-grid > div{
+  position: relative;
+  overflow: hidden;
+  padding: 16px 16px 14px;
+  border-radius: 18px;
+  border: 1px solid var(--cardEdge);
+  background:
+    radial-gradient(900px 240px at 15% 0%, rgba(245,158,11,0.18), transparent 55%),
+    radial-gradient(900px 240px at 90% 20%, rgba(56,189,248,0.14), transparent 55%),
+    rgba(17,24,39,0.82);
+  box-shadow: 0 16px 50px rgba(0,0,0,0.45);
+  backdrop-filter: blur(10px);
+  transform: translateZ(0);
+}
+
+/* Thin top “foil” strip */
+#cards.card-grid > a::before,
+#cards.card-grid > div::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height: 46px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+  opacity: 0.55;
+  pointer-events:none;
+}
+
+/* Hover */
+#cards.card-grid > a:hover,
+#cards.card-grid > div:hover{
+  transform: translateY(-2px);
+  border-color: rgba(245,158,11,0.35);
+}
+
+/* If your cards are links, kill link look */
+#cards.card-grid a{
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+/* ----- Typography hierarchy ----- */
+/* This targets the first few text lines in your current layout without needing JS changes */
+
+/* Rank line (ex: #7) */
+#cards.card-grid > a > :first-child,
+#cards.card-grid > div > :first-child{
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.92);
+  opacity: 0.95;
+}
+
+/* Player name line (usually the 2nd line) */
+#cards.card-grid > a > :nth-child(2),
+#cards.card-grid > div > :nth-child(2){
+  margin-top: 2px;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.98);
+}
+
+/* Player ID line (usually 3rd line) */
+#cards.card-grid > a > :nth-child(3),
+#cards.card-grid > div > :nth-child(3){
+  margin-top: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+/* “DEAL OR DIE” line */
+#cards.card-grid > a > :nth-child(4),
+#cards.card-grid > div > :nth-child(4){
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,158,11,0.95);
+}
+
+/* ----- Stats: convert pills into labeled mini-panels ----- */
+/* If your stats are currently individual pill elements, this will still make them nicer. */
+#cards .stat-row{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#cards .stat-pill{
+  border-radius: 14px;
+  padding: 10px 8px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+#cards .stat-pill .k{
+  display:block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+#cards .stat-pill .v{
+  display:block;
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.95);
+}
+
+/* If your stats are not in .stat-row/.stat-pill yet, at least make existing “pill” spans nicer */
+#cards .pill,
+#cards .tag,
+#cards .badge{
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  padding: 6px 10px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.90);
+}
+
+/* Make “WIN%” pill feel special if present */
+#cards .pill.win,
+#cards .badge.win,
+#cards .tag.win{
+  border-color: rgba(56,189,248,0.30);
+  background: rgba(56,189,248,0.10);
+}
+
+/* ----- Quote styling ----- */
+#cards .quote,
+#cards blockquote{
+  margin: 12px 0 0;
+  padding-left: 12px;
+  border-left: 3px solid rgba(245,158,11,0.75);
+  color: rgba(255,255,255,0.85);
+  font-style: italic;
+  line-height: 1.25;
+}
+
+/* If quote is just a plain <p> at the end, this helps */
+#cards.card-grid > a p:last-child,
+#cards.card-grid > div p:last-child{
+  margin-top: 12px;
+  padding-left: 12px;
+  border-left: 3px solid rgba(245,158,11,0.75);
+  color: rgba(255,255,255,0.85);
+  font-style: italic;
+}
+
+/* ----- Rank flair: top 3 glow (if you add .rank-1/.rank-2/.rank-3 to cards later) ----- */
+#cards .rank-1{ border-color: rgba(245,158,11,0.55); box-shadow: 0 18px 60px rgba(245,158,11,0.12), 0 16px 50px rgba(0,0,0,0.45); }
+#cards .rank-2{ border-color: rgba(148,163,184,0.55); }
+#cards .rank-3{ border-color: rgba(249,115,22,0.45); }
+
+/* Mobile spacing */
+@media (max-width: 560px){
+  #cards.card-grid{ grid-template-columns: 1fr; }
+}
