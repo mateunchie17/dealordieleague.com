@@ -1,6 +1,6 @@
 /* players.js — Deal or Die League */
 
-const DATA_URL = "PASTE_YOUR_JSON_URL_HERE";
+const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
 
 /**
  * Optional: add photos by player_id.
