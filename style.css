@@ -374,3 +374,320 @@ tbody tr:hover{ background:rgba(99,102,241,0.10); }
 
   h1{ font-size:24px; }
 }
+
+/* ===============================
+   SEASON BANNER (STANDINGS)
+================================ */
+.season-banner-wrap{
+  max-width:1100px;
+  margin: 18px auto -6px;
+  padding: 0 16px;
+}
+
+.season-banner{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(900px 280px at 0% 0%, rgba(245,166,35,0.28), transparent 55%),
+    radial-gradient(700px 260px at 100% 40%, rgba(99,102,241,0.22), transparent 60%),
+    linear-gradient(90deg, rgba(17,24,39,0.88), rgba(17,24,39,0.78));
+  box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+  overflow:hidden;
+}
+
+.season-banner:before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:linear-gradient(120deg,
+    rgba(245,166,35,0.00) 0%,
+    rgba(245,166,35,0.35) 35%,
+    rgba(56,189,248,0.28) 55%,
+    rgba(99,102,241,0.30) 75%,
+    rgba(245,166,35,0.00) 100%);
+  background-size: 220% 220%;
+  filter: blur(18px);
+  opacity:.55;
+  animation: bannerGlow 8s ease-in-out infinite;
+  pointer-events:none;
+}
+
+@keyframes bannerGlow{
+  0%{ transform: translateX(-8%); }
+  50%{ transform: translateX(8%); }
+  100%{ transform: translateX(-8%); }
+}
+
+.season-banner__icon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  background:rgba(245,166,35,0.16);
+  border:1px solid rgba(245,166,35,0.40);
+  flex:0 0 auto;
+}
+
+.season-banner__content{ min-width:0; }
+.season-banner__kicker{
+  font-size:11px;
+  letter-spacing:.18em;
+  font-weight:900;
+  color:rgba(255,255,255,0.72);
+}
+.season-banner__title{
+  margin-top:2px;
+  font-size:15px;
+  font-weight:800;
+  letter-spacing:-0.01em;
+}
+
+.season-banner__badge{
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.16em;
+  font-weight:1000;
+  text-transform:uppercase;
+  background: rgba(56,189,248,0.12);
+  border:1px solid rgba(56,189,248,0.28);
+  color: rgba(229,231,235,0.95);
+  flex:0 0 auto;
+}
+
+@media (max-width: 640px){
+  .season-banner{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .season-banner__badge{
+    align-self:stretch;
+    text-align:center;
+  }
+}
+
+/* ===============================
+   SUBTABS (PLAYERS / PLAYOFFS)
+================================ */
+.subtabs{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.subtab{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  text-decoration:none;
+  color: var(--text);
+  font-size:14px;
+  transition:.2s;
+}
+
+.subtab:hover{ background: rgba(255,255,255,0.08); }
+.subtab.active{
+  background: rgba(245,166,35,0.16);
+  border-color: rgba(245,166,35,0.42);
+}
+
+/* ===============================
+   PLAYOFF BRACKET
+================================ */
+.bracket{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  padding: 6px 2px 10px;
+  scroll-snap-type: x mandatory;
+}
+
+.round{
+  min-width: 280px;
+  scroll-snap-align: start;
+}
+
+.round-title{
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color: var(--muted);
+  font-weight:900;
+  margin: 0 0 10px;
+}
+
+.round-cards{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.match{
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(180deg, rgba(25,35,60,0.92), rgba(18,25,45,0.92));
+  box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+  overflow:hidden;
+  position:relative;
+}
+
+.match:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(600px 120px at 10% 0%, rgba(245,166,35,0.18), transparent 55%),
+              radial-gradient(600px 140px at 90% 30%, rgba(99,102,241,0.16), transparent 60%);
+  pointer-events:none;
+  opacity:.9;
+}
+
+.match-h{
+  position:relative;
+  z-index:1;
+  padding:10px 12px;
+  border-bottom:1px solid rgba(255,255,255,0.10);
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.match-title{
+  font-weight:900;
+  letter-spacing:-0.01em;
+}
+
+.match-sub{
+  color: var(--muted);
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.match-b{
+  position:relative;
+  z-index:1;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.team{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+
+.team .seed{
+  font-weight:1000;
+  font-size:12px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color: rgba(245,166,35,0.95);
+  white-space:nowrap;
+}
+
+.team .name{
+  font-weight:900;
+  text-align:right;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.bracket-note{
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* --- Playoffs bracket enhancements --- */
+.bracket-wrap{
+  position:relative;
+}
+
+.bracket-lines{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:visible;
+  z-index:0;
+}
+
+.bracket{
+  position:relative;
+  z-index:1;
+}
+
+.team{
+  cursor:pointer;
+  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.team:hover{
+  transform: translateY(-1px);
+  border-color: rgba(245,166,35,0.35);
+  background: rgba(245,166,35,0.06);
+}
+
+.team.selected{
+  border-color: rgba(245,166,35,0.70);
+  background: linear-gradient(180deg, rgba(245,166,35,0.16), rgba(255,255,255,0.03));
+  box-shadow: 0 10px 22px rgba(245,166,35,0.10);
+}
+
+.team.selected .name{
+  text-shadow: 0 0 18px rgba(245,166,35,0.22);
+}
+
+.team.disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.team .pick{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.18);
+  color: rgba(255,255,255,0.92);
+  font-size:12px;
+  line-height:1;
+}
+
+.team.selected .pick{
+  border-color: rgba(245,166,35,0.65);
+  background: rgba(245,166,35,0.18);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .team{ transition:none; }
+  .team:hover{ transform:none; }
+}

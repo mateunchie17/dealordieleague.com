@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Players · Deal or Die League</title>
-  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style.css?v=12" />
 </head>
 
 <body>
@@ -17,6 +17,7 @@
     <nav class="nav-tabs" aria-label="Primary navigation">
       <a href="index.html">Standings</a>
       <a class="active" href="players.html">Players</a>
+      <a href="playoffs.html">Playoffs</a>
       <a href="rules.html">Rule Book</a>
       <a href="howto.html">How to Play</a>
     </nav>
@@ -31,18 +32,13 @@
 
     <section>
       <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--line); border-radius:999px; background: rgba(255,255,255,0.03);">
-            🏆 <strong>Player Cards</strong>
-          </span>
-        </div>
-        <div style="color:var(--muted); font-size:13px;">Sorted by Points (Win % tiebreak)</div>
+                <div style="color:var(--muted); font-size:13px;">Sorted by Points (Win % tiebreak)</div>
       </div>
 
       <div id="cards" class="card-grid"></div>
     </section>
   </main>
 
-  <script src="players.js?v=11"></script>
+  <script src="players.js?v=12"></script>
 </body>
 </html>

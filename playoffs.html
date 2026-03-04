@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Playoffs · Deal or Die League</title>
+  <link rel="stylesheet" href="style.css?v=12" />
+</head>
+
+<body>
+  <header>
+    <a class="logo" href="index.html" aria-label="Deal or Die League Home">
+      <img src="logo.png" alt="Deal or Die League logo" />
+      <span class="brand">Deal or Die League</span>
+    </a>
+
+    <nav class="nav-tabs" aria-label="Primary navigation">
+      <a href="index.html">Standings</a>
+      <a href="players.html">Players</a>
+      <a class="active" href="playoffs.html">Playoffs</a>
+      <a href="rules.html">Rule Book</a>
+      <a href="howto.html">How to Play</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1 style="margin:0 0 6px;">Playoffs</h1>
+      <p style="margin:0; color: var(--muted);">
+        Bracketket auto-fills from current standings (Top 6). Seeds 1–2 get a bye.
+        <span id="updated" style="margin-left:8px;">Loading...</span>
+      </p>
+    </section>
+
+    <section>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+        <div class="subtabs" aria-label="Players section tabs">
+          <a class="subtab" href="players.html">🏆 <strong>Player Cards</strong></a>
+          <a class="subtab active" href="playoffs.html">🧩 <strong>Playoffs</strong></a>
+        </div>
+        <div style="color:var(--muted); font-size:13px;">Seeding: Points (Win % tiebreak)</div>
+      </div>
+
+      <div class="bracket-wrap" aria-label="Playoff bracket">
+        <svg id="bracketLines" class="bracket-lines" aria-hidden="true"></svg>
+        <div id="bracket" class="bracket"></div>
+      </div>
+      <p class="bracket-note">Tip: This page is “live seeding”. Seeds update automatically from Standings.</p>
+    </section>
+  </main>
+
+  <script src="playoffs.js?v=12"></script>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Deal or Die League</title>
-  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style.css?v=12" />
 </head>
 
 <body>
@@ -18,6 +18,7 @@
     <nav class="nav-tabs" aria-label="Primary navigation">
       <a class="active" href="index.html">Standings</a>
       <a href="players.html">Players</a>
+      <a href="playoffs.html">Playoffs</a>
       <a href="rules.html">Rule Book</a>
       <a href="howto.html">How to Play</a>
     </nav>
@@ -25,6 +26,17 @@
 
   <!-- PAGE CONTENT -->
   <main>
+<div class="season-banner-wrap" aria-live="polite">
+      <div class="season-banner" role="note">
+        <div class="season-banner__icon" aria-hidden="true">⏳</div>
+        <div class="season-banner__content">
+          <div class="season-banner__kicker">REGULAR SEASON</div>
+          <div class="season-banner__title">Ends at <strong>11:59pm</strong> on <strong>Sunday, March 8</strong></div>
+        </div>
+        <div class="season-banner__badge" aria-hidden="true">FINAL PUSH</div>
+      </div>
+    </div>
+
     <section>
       <h1 style="margin:0 0 6px;">Standings</h1>
       <p style="margin:0; color: var(--muted);">
@@ -70,6 +82,6 @@
     </section>
   </main>
 
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>
