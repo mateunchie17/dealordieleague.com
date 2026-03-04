@@ -691,3 +691,38 @@ tbody tr:hover{ background:rgba(99,102,241,0.10); }
   .team{ transition:none; }
   .team:hover{ transform:none; }
 }
+
+
+/* --- Playoffs finals controls --- */
+.bracket-controls{
+  margin-top: 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.bracket-hint{
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.btn{
+  appearance:none;
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.92);
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  background: rgba(245,166,35,0.10);
+  border-color: rgba(245,166,35,0.35);
+}
+.btn:active{ transform: translateY(0px); }
+.btn.small{ padding: 8px 10px; font-size: 13px; }
