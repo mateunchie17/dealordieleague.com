@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Playoffs · Deal or Die League</title>
-  <link rel="stylesheet" href="style.css?v=12" />
+  <link rel="stylesheet" href="style.css?v=13" />
 </head>
 
 <body>
@@ -26,24 +26,21 @@
   <main>
     <section>
       <h1 style="margin:0 0 6px;">Playoffs</h1>
-      <p style="margin:0; color: var(--muted);">
-        Bracketket auto-fills from current standings (Top 6). Seeds 1–2 get a bye.
-        <span id="updated" style="margin-left:8px;">Loading...</span>
+      <p style="margin:0; color: var(--muted); max-width: 900px; line-height:1.55;">
+        Top 6 seeds make the playoffs. The field opens with two separate 3-player semifinal series. Each semifinal winner advances directly to the Finals, while the remaining four players drop into a one-game Play-In for the last Finals spot. The Finals are a 3-player series.
+        <span id="updated" style="display:inline-block; margin-left:8px;">Loading...</span>
       </p>
     </section>
 
     <section>
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
-        <div style="color:var(--muted); font-size:13px;">Seeding: Points (Win % tiebreak)</div>
-      </div>
-<div class="bracket-wrap" aria-label="Playoff bracket">
+      <div class="bracket-wrap" aria-label="Playoff bracket">
         <svg id="bracketLines" class="bracket-lines" aria-hidden="true"></svg>
         <div id="bracket" class="bracket"></div>
       </div>
-      <p class="bracket-note">Tip: This page is “live seeding”. Seeds update automatically from Standings.</p>
+      <p class="bracket-note">Live seeding follows the current Standings page order, using the same points and tiebreak logic.</p>
     </section>
   </main>
 
-  <script src="playoffs.js?v=12"></script>
+  <script src="playoffs.js?v=13"></script>
 </body>
 </html>

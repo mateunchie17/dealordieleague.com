@@ -1,10 +1,11 @@
-// Uses the same data feed as the Standings page
 const DATA_URL = "https://script.google.com/macros/s/AKfycbxQrUIzOHVOcEQuvA1Yq61SK3ATgj7DORlSfn-kDMaAUGjujrrjwqP5BtMx5uflmCDsRA/exec";
+const PICKS_KEY = "dod_playoffs_picks_v3";
 
-// Browser persistence for *this device* only
-const PICKS_KEY = "dod_playoffs_picks_v2";
+function points(wins) {
+  return Number(wins || 0) * 2;
+}
 
-function pct(wins, games) {
+function pctNumber(wins, games) {
   if (!games) return 0;
   return wins / games;
 }
@@ -25,11 +26,10 @@ function savePicks(picks) {
 }
 
 function byStandings(a, b) {
-  // sort desc by win%, then wins, then name
-  const pa = pct(a.wins, a.games);
-  const pb = pct(b.wins, b.games);
-  if (pb !== pa) return pb - pa;
+  if (b.points !== a.points) return b.points - a.points;
+  if (b.winPct !== a.winPct) return b.winPct - a.winPct;
   if (b.wins !== a.wins) return b.wins - a.wins;
+  if (b.games !== a.games) return b.games - a.games;
   return String(a.name).localeCompare(String(b.name));
 }
 
@@ -57,7 +57,6 @@ function setUpdated(text) {
 function computeStandings(data) {
   const stats = {};
 
-  // initialize players
   (data.players || []).forEach(p => {
     if (String(p.active).toLowerCase() === "false") return;
     stats[p.player_id] = {
@@ -68,21 +67,24 @@ function computeStandings(data) {
     };
   });
 
-  // roll up games
   (data.games || []).forEach(g => {
-    const p1 = g.p1_id, p2 = g.p2_id, w = g.winner_id;
-    if (!stats[p1] || !stats[p2]) return;
+    const ids = (g.player_ids || []).map(String);
+    ids.forEach(pid => {
+      if (stats[pid]) stats[pid].games += 1;
+    });
 
-    stats[p1].games += 1;
-    stats[p2].games += 1;
-
-    if (String(w) === String(p1)) stats[p1].wins += 1;
-    else if (String(w) === String(p2)) stats[p2].wins += 1;
+    const winner = String(g.winner_id || "");
+    if (stats[winner]) stats[winner].wins += 1;
   });
 
-  const arr = Object.values(stats);
-  arr.sort(byStandings);
-  return arr;
+  const rows = Object.values(stats).map(s => ({
+    ...s,
+    points: points(s.wins),
+    winPct: pctNumber(s.wins, s.games)
+  }));
+
+  rows.sort(byStandings);
+  return rows;
 }
 
 function seedsFromStandings(standings) {
@@ -92,7 +94,30 @@ function seedsFromStandings(standings) {
   return { top6, seedById };
 }
 
-function drawConnector(svg, fromEl, toEl) {
+function normalizePicks(picks, validIds) {
+  const out = {
+    semiWinners: {},
+    playInWinner: null,
+    champion: null,
+  };
+
+  ["semi1", "semi2"].forEach(key => {
+    const val = picks?.semiWinners?.[key];
+    if (val && validIds.has(String(val))) out.semiWinners[key] = String(val);
+  });
+
+  if (picks?.playInWinner && validIds.has(String(picks.playInWinner))) {
+    out.playInWinner = String(picks.playInWinner);
+  }
+
+  if (picks?.champion && validIds.has(String(picks.champion))) {
+    out.champion = String(picks.champion);
+  }
+
+  return out;
+}
+
+function drawConnector(svg, fromEl, toEl, opts = {}) {
   if (!svg || !fromEl || !toEl) return;
 
   const s = svg.getBoundingClientRect();
@@ -103,61 +128,63 @@ function drawConnector(svg, fromEl, toEl) {
   const y1 = (a.top + a.height / 2 - s.top);
   const x2 = (b.left - s.left);
   const y2 = (b.top + b.height / 2 - s.top);
+  const dx = Math.max(56, (x2 - x1) * 0.48);
 
-  const dx = Math.max(40, (x2 - x1) * 0.55);
-
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`);
-  path.setAttribute("fill", "none");
-  path.setAttribute("stroke", "rgba(245,166,35,0.55)");
-  path.setAttribute("stroke-width", "2.2");
-  path.setAttribute("stroke-linecap", "round");
-  path.setAttribute("opacity", "0.9");
-  svg.appendChild(path);
+  const d = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
 
   const glow = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  glow.setAttribute("d", path.getAttribute("d"));
+  glow.setAttribute("d", d);
   glow.setAttribute("fill", "none");
-  glow.setAttribute("stroke", "rgba(99,102,241,0.30)");
-  glow.setAttribute("stroke-width", "7");
+  glow.setAttribute("stroke", opts.glow || "rgba(99,102,241,0.25)");
+  glow.setAttribute("stroke-width", opts.glowWidth || "10");
   glow.setAttribute("stroke-linecap", "round");
-  glow.setAttribute("opacity", "0.55");
   svg.appendChild(glow);
+
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", d);
+  path.setAttribute("fill", "none");
+  path.setAttribute("stroke", opts.stroke || "rgba(245,166,35,0.65)");
+  path.setAttribute("stroke-width", opts.width || "2.5");
+  path.setAttribute("stroke-linecap", "round");
+  svg.appendChild(path);
 }
 
 function redrawLines() {
   const svg = document.getElementById("bracketLines");
-  if (!svg) return;
-  svg.innerHTML = "";
   const wrap = document.querySelector(".bracket-wrap");
-  if (!wrap) return;
+  if (!svg || !wrap) return;
 
+  svg.innerHTML = "";
   const rect = wrap.getBoundingClientRect();
   svg.setAttribute("viewBox", `0 0 ${rect.width} ${rect.height}`);
   svg.setAttribute("preserveAspectRatio", "none");
 
   const semi1 = document.getElementById("match-semi1");
   const semi2 = document.getElementById("match-semi2");
+  const playin = document.getElementById("match-playin");
   const finals = document.getElementById("match-finals");
 
-  drawConnector(svg, semi1, finals);
-  drawConnector(svg, semi2, finals);
+  drawConnector(svg, semi1, playin, { stroke: "rgba(56,189,248,0.55)", glow: "rgba(56,189,248,0.18)" });
+  drawConnector(svg, semi2, playin, { stroke: "rgba(56,189,248,0.55)", glow: "rgba(56,189,248,0.18)" });
+  drawConnector(svg, semi1, finals, { stroke: "rgba(245,166,35,0.55)", glow: "rgba(245,166,35,0.16)" });
+  drawConnector(svg, semi2, finals, { stroke: "rgba(245,166,35,0.55)", glow: "rgba(245,166,35,0.16)" });
+  drawConnector(svg, playin, finals, { stroke: "rgba(168,85,247,0.65)", glow: "rgba(168,85,247,0.22)" });
 }
 
-function renderTeamRow(player, seed, picks, onClick, opts = {}) {
+function renderTeamRow(player, seed, state, onClick, opts = {}) {
   const id = player ? String(player.id) : "";
-  const pickIndex = picks.finalists.indexOf(id);
-  const isFinalist = pickIndex !== -1;
-  const isChampion = picks.champion && String(picks.champion) === id;
-
   const disabled = !!opts.disabled;
   const clickable = !!opts.clickable && !disabled;
+  const selected = !!opts.selected;
+  const crowned = !!opts.crowned;
 
   const row = el("div", {
     class: [
       "team",
-      isFinalist ? "selected" : "",
-      disabled ? "disabled" : ""
+      selected ? "selected" : "",
+      crowned ? "crowned" : "",
+      disabled ? "disabled" : "",
+      opts.variant ? `team-${opts.variant}` : "",
     ].filter(Boolean).join(" "),
     role: clickable ? "button" : "group",
     tabindex: clickable ? "0" : "-1",
@@ -165,21 +192,12 @@ function renderTeamRow(player, seed, picks, onClick, opts = {}) {
   });
 
   const left = el("div", { class: "left" }, [
-    el("span", { class: "seed" }, seed ? `SEED ${seed}` : opts.label || ""),
+    el("span", { class: "seed" }, seed ? `SEED ${seed}` : (opts.label || "")),
     el("span", { class: "name" }, player ? player.name : (opts.placeholder || "TBD"))
   ]);
 
-  // pick badge: finalist order or champion crown
-  let badge = null;
-  if (isChampion) {
-    badge = el("span", { class: "pick", title: "Champion" }, "👑");
-  } else if (isFinalist) {
-    badge = el("span", { class: "pick", title: "Finalist order" }, String(pickIndex + 1));
-  } else if (opts.showEmptyPick) {
-    badge = el("span", { class: "pick", title: "Pick" }, "•");
-  } else {
-    badge = el("span", { class: "pick", title: "" }, "");
-  }
+  const badgeText = crowned ? "👑" : (opts.badge || "");
+  const badge = el("span", { class: "pick", title: badgeText || "" }, badgeText);
 
   row.appendChild(left);
   row.appendChild(badge);
@@ -195,171 +213,226 @@ function renderTeamRow(player, seed, picks, onClick, opts = {}) {
   return row;
 }
 
-function normalizePicks(picks, validIds) {
-  const out = { finalists: [], champion: null };
-
-  const seen = new Set();
-  (picks.finalists || []).forEach(id => {
-    const sid = String(id);
-    if (!validIds.has(sid)) return;
-    if (seen.has(sid)) return;
-    seen.add(sid);
-    out.finalists.push(sid);
-  });
-
-  out.finalists = out.finalists.slice(0, 3);
-
-  if (picks.champion && validIds.has(String(picks.champion)) && out.finalists.includes(String(picks.champion))) {
-    out.champion = String(picks.champion);
-  } else {
-    out.champion = null;
-  }
-
-  return out;
-}
-
 function renderBracket({ semi1, semi2, seedById }) {
   const bracket = document.getElementById("bracket");
   if (!bracket) return;
 
-  const validIds = new Set([...semi1, ...semi2].map(p => String(p.id)));
+  const allPlayers = [...semi1, ...semi2];
+  const validIds = new Set(allPlayers.map(p => String(p.id)));
   let picks = normalizePicks(getPicks(), validIds);
 
+  function semiLosers() {
+    return allPlayers.filter(p => {
+      const sid = String(p.id);
+      return sid !== picks.semiWinners.semi1 && sid !== picks.semiWinners.semi2;
+    });
+  }
+
+  function finalPlayers() {
+    return [picks.semiWinners.semi1, picks.semiWinners.semi2, picks.playInWinner]
+      .map(id => allPlayers.find(p => String(p.id) === String(id)))
+      .filter(Boolean);
+  }
+
+  function cleanPicks(next) {
+    const normalized = normalizePicks(next, validIds);
+    const loserIds = new Set(semiLosers().map(p => String(p.id)));
+
+    if (normalized.playInWinner && !loserIds.has(normalized.playInWinner)) {
+      normalized.playInWinner = null;
+    }
+
+    const finalIds = new Set([
+      normalized.semiWinners.semi1,
+      normalized.semiWinners.semi2,
+      normalized.playInWinner
+    ].filter(Boolean));
+
+    if (normalized.champion && !finalIds.has(normalized.champion)) {
+      normalized.champion = null;
+    }
+
+    return normalized;
+  }
+
   function setPicks(next) {
-    picks = normalizePicks(next, validIds);
+    picks = cleanPicks(next);
     savePicks(picks);
   }
 
-  function toggleFinalist(id) {
+  function pickSemi(matchKey, id) {
     const sid = String(id);
-    const next = { ...picks, finalists: [...picks.finalists] };
-    const idx = next.finalists.indexOf(sid);
-
-    if (idx !== -1) {
-      next.finalists.splice(idx, 1);
-      if (next.champion === sid) next.champion = null;
-    } else {
-      if (next.finalists.length >= 3) return; // max 3 finalists
-      next.finalists.push(sid);
-    }
-
+    const next = {
+      ...picks,
+      semiWinners: { ...picks.semiWinners, [matchKey]: picks.semiWinners[matchKey] === sid ? null : sid }
+    };
+    if (next.semiWinners[matchKey] === null) delete next.semiWinners[matchKey];
     setPicks(next);
+    paint();
+  }
+
+  function pickPlayIn(id) {
+    const sid = String(id);
+    const losers = semiLosers().map(p => String(p.id));
+    if (!losers.includes(sid)) return;
+    setPicks({ ...picks, playInWinner: picks.playInWinner === sid ? null : sid });
     paint();
   }
 
   function pickChampion(id) {
     const sid = String(id);
-    if (!picks.finalists.includes(sid)) return;
-    const next = { ...picks, champion: picks.champion === sid ? null : sid };
-    setPicks(next);
+    const finals = finalPlayers().map(p => String(p.id));
+    if (!finals.includes(sid)) return;
+    setPicks({ ...picks, champion: picks.champion === sid ? null : sid });
     paint();
   }
 
   function resetAll() {
-    setPicks({ finalists: [], champion: null });
+    setPicks({ semiWinners: {}, playInWinner: null, champion: null });
     paint();
   }
 
-  function buildRound(title, matchEl) {
+  function buildRound(title, matchEl, meta) {
     return el("div", { class: "round" }, [
       el("div", { class: "round-title" }, title),
+      meta ? el("div", { class: "round-meta" }, meta) : null,
       el("div", { class: "round-cards" }, [matchEl]),
     ]);
   }
 
-  function buildMatch({ id, title, subtitle, teams, clickMode }) {
-    // clickMode: "finalists" | "champion" | null
+  function buildMatch({ id, stage, title, subtitle, teams, onPick, selectedIds, championId }) {
     const body = el("div", { class: "match-b" });
 
     teams.forEach(t => {
-      if (t.player) {
-        body.appendChild(renderTeamRow(
-          t.player,
-          t.seed,
-          picks,
-          clickMode === "finalists" ? toggleFinalist : pickChampion,
-          { clickable: !!clickMode }
-        ));
-      } else {
-        body.appendChild(renderTeamRow(
-          null,
-          null,
-          picks,
-          () => {},
-          { disabled: true, placeholder: t.placeholder || "TBD", label: t.label || "FINALIST" }
-        ));
-      }
+      body.appendChild(renderTeamRow(
+        t.player || null,
+        t.seed || null,
+        picks,
+        onPick || (() => {}),
+        {
+          clickable: !!(onPick && t.player),
+          disabled: !!t.disabled,
+          placeholder: t.placeholder,
+          label: t.label,
+          selected: !!(t.player && selectedIds.includes(String(t.player.id))),
+          crowned: !!(t.player && championId && championId === String(t.player.id)),
+          badge: t.badge,
+          variant: stage,
+        }
+      ));
     });
 
-    const headerRight = el("span", { class: "match-sub" }, subtitle || "");
-
-    const header = el("div", { class: "match-h" }, [
-      el("div", { class: "match-title" }, title),
-      headerRight
+    return el("div", { class: `match stage-${stage}`, id }, [
+      el("div", { class: "match-h" }, [
+        el("div", { class: "match-title-wrap" }, [
+          el("div", { class: "match-eyebrow" }, stage.toUpperCase()),
+          el("div", { class: "match-title" }, title),
+        ]),
+        el("span", { class: "match-sub" }, subtitle || "")
+      ]),
+      body
     ]);
-
-    const match = el("div", { class: "match", id }, [header, body]);
-
-    return match;
   }
 
   function paint() {
     bracket.innerHTML = "";
 
+    const semi1Winner = picks.semiWinners.semi1;
+    const semi2Winner = picks.semiWinners.semi2;
+    const losers = semiLosers();
+    const losersReady = !!semi1Winner && !!semi2Winner;
+    const finalsReady = !!semi1Winner && !!semi2Winner && !!picks.playInWinner;
+
     const semi1Match = buildMatch({
       id: "match-semi1",
+      stage: "semi",
       title: "Semifinal 1",
-      subtitle: "3‑player game",
+      subtitle: "Seeds 1, 5, 6 · Best of 4",
       teams: semi1.map(p => ({ player: p, seed: seedById.get(String(p.id)) })),
-      clickMode: "finalists"
+      onPick: (id) => pickSemi("semi1", id),
+      selectedIds: [semi1Winner],
+      championId: null,
     });
 
     const semi2Match = buildMatch({
       id: "match-semi2",
+      stage: "semi",
       title: "Semifinal 2",
-      subtitle: "3‑player game",
+      subtitle: "Seeds 2, 3, 4 · Best of 4",
       teams: semi2.map(p => ({ player: p, seed: seedById.get(String(p.id)) })),
-      clickMode: "finalists"
+      onPick: (id) => pickSemi("semi2", id),
+      selectedIds: [semi2Winner],
+      championId: null,
     });
 
-    const finalists = picks.finalists
-      .map(id => [...semi1, ...semi2].find(p => String(p.id) === String(id)))
-      .filter(Boolean);
+    const playInTeams = losersReady
+      ? losers.map(p => ({ player: p, seed: seedById.get(String(p.id)) }))
+      : [
+          { placeholder: "Waiting for semifinal winner", label: "LOSER SLOT" },
+          { placeholder: "Waiting for semifinal winner", label: "LOSER SLOT" },
+          { placeholder: "Waiting for semifinal winner", label: "LOSER SLOT" },
+          { placeholder: "Waiting for semifinal winner", label: "LOSER SLOT" },
+        ];
 
-    const finalsTeams = [];
-    for (let i = 0; i < 3; i++) {
-      if (finalists[i]) finalsTeams.push({ player: finalists[i], seed: seedById.get(String(finalists[i].id)) });
-      else finalsTeams.push({ placeholder: "Select from semifinals", label: `FINALIST ${i + 1}` });
-    }
+    const playInMatch = buildMatch({
+      id: "match-playin",
+      stage: "playin",
+      title: "Play-In",
+      subtitle: "4-player game · 1 advances",
+      teams: playInTeams,
+      onPick: losersReady ? pickPlayIn : null,
+      selectedIds: picks.playInWinner ? [picks.playInWinner] : [],
+      championId: null,
+    });
+
+    const finalsTeams = finalsReady
+      ? finalPlayers().map(p => ({ player: p, seed: seedById.get(String(p.id)), badge: "●" }))
+      : [
+          { placeholder: "Winner of Semifinal 1", label: "FINALIST" },
+          { placeholder: "Winner of Semifinal 2", label: "FINALIST" },
+          { placeholder: "Winner of Play-In", label: "FINALIST" },
+        ];
 
     const finalsMatch = buildMatch({
       id: "match-finals",
+      stage: "finals",
       title: "Finals",
-      subtitle: "Top 3 advance",
+      subtitle: "3-player final · Best of 3",
       teams: finalsTeams,
-      clickMode: "champion"
+      onPick: finalsReady ? pickChampion : null,
+      selectedIds: picks.champion ? [picks.champion] : [],
+      championId: picks.champion,
     });
 
-    const controls = el("div", { class: "bracket-controls" }, [
-      el("div", { class: "bracket-hint" }, "Click players in the semifinals to choose the 3 finalists. Then click a finalist to crown the champion."),
-      el("button", { class: "btn small", type: "button", onclick: resetAll }, "Reset picks")
+    const hero = el("div", { class: "playoff-hero" }, [
+      el("div", { class: "playoff-hero__badge" }, "🏆 Championship Path"),
+      el("div", { class: "playoff-hero__title" }, "Six get in. Two semifinal battles. One last shot. One champion."),
+      el("div", { class: "playoff-hero__meta" }, [
+        el("span", { class: "hero-pill" }, "Semifinals: Best of 4"),
+        el("span", { class: "hero-pill" }, "Play-In: 1 Game"),
+        el("span", { class: "hero-pill" }, "Finals: Best of 3"),
+      ])
     ]);
 
-    bracket.appendChild(buildRound("SEMIFINAL 1", semi1Match));
-    bracket.appendChild(buildRound("SEMIFINAL 2", semi2Match));
-    bracket.appendChild(buildRound("FINALS", finalsMatch));
+    const controls = el("div", { class: "bracket-controls" }, [
+      el("div", { class: "bracket-hint" }, "Click a semifinal winner in each group, then pick the Play-In survivor, then crown your finals winner."),
+      el("button", { class: "btn small", type: "button", onclick: resetAll }, "Reset bracket")
+    ]);
+
+    bracket.appendChild(hero);
+    bracket.appendChild(el("div", { class: "bracket-grid" }, [
+      buildRound("SEMIFINAL 1", semi1Match, "3-player series"),
+      buildRound("SEMIFINAL 2", semi2Match, "3-player series"),
+      buildRound("PLAY-IN", playInMatch, "Four semifinal non-winners battle for the last seat"),
+      buildRound("FINALS", finalsMatch, "Three-player series for the title"),
+    ]));
     bracket.appendChild(controls);
 
-    // lines after layout
-    requestAnimationFrame(() => {
-      redrawLines();
-    });
+    requestAnimationFrame(redrawLines);
   }
 
   paint();
-
   window.addEventListener("resize", () => redrawLines(), { passive: true });
-  // If fonts load late, redraw once more
   setTimeout(() => redrawLines(), 350);
 }
 
@@ -373,9 +446,6 @@ async function loadPlayoffs() {
     const standings = computeStandings(data);
     const { top6, seedById } = seedsFromStandings(standings);
 
-    // Seed groups requested:
-    // Semifinal 1: seeds 1,5,6
-    // Semifinal 2: seeds 2,3,4
     const bySeed = new Map();
     top6.forEach(p => bySeed.set(seedById.get(String(p.id)), p));
 
@@ -383,7 +453,6 @@ async function loadPlayoffs() {
     const semi2 = [bySeed.get(2), bySeed.get(3), bySeed.get(4)].filter(Boolean);
 
     renderBracket({ semi1, semi2, seedById });
-
   } catch (e) {
     console.error(e);
     setUpdated("Could not load data.");
