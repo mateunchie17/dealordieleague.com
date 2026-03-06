@@ -6,7 +6,6 @@
   <title>Playoffs · Deal or Die League</title>
   <link rel="stylesheet" href="style.css?v=13" />
 </head>
-
 <body>
   <header>
     <a class="logo" href="index.html" aria-label="Deal or Die League Home">
@@ -24,20 +23,27 @@
   </header>
 
   <main>
-    <section>
-      <h1 style="margin:0 0 6px;">Playoffs</h1>
-      <p style="margin:0; color: var(--muted); max-width: 900px; line-height:1.55;">
-        Top 6 seeds make the playoffs. The field opens with two separate 3-player semifinal series. Each semifinal winner advances directly to the Finals, while the remaining four players drop into a one-game Play-In for the last Finals spot. The Finals are a 3-player series.
-        <span id="updated" style="display:inline-block; margin-left:8px;">Loading...</span>
-      </p>
+    <section class="playoffs-hero">
+      <div class="playoffs-hero-copy">
+        <span class="playoffs-kicker">Tournament View</span>
+        <h1>Playoffs</h1>
+        <p class="playoffs-lede">
+          Top 6 seeds make the playoffs. Two separate <strong>best-of-4</strong> semifinal series decide the first two finalists.
+          The four non-winners drop into a <strong>one-game Play-In</strong>, and that winner joins the finals for a <strong>3-game championship series</strong>.
+        </p>
+      </div>
+      <div class="playoffs-hero-meta">
+        <div class="playoffs-meta-pill">Format: 3-player series</div>
+        <div class="playoffs-meta-pill" id="updated">Loading...</div>
+      </div>
     </section>
 
     <section>
-      <div class="bracket-wrap" aria-label="Playoff bracket">
+      <div class="playoff-board-wrap" aria-label="Playoff bracket">
         <svg id="bracketLines" class="bracket-lines" aria-hidden="true"></svg>
-        <div id="bracket" class="bracket"></div>
+        <div id="bracket" class="playoff-board"></div>
       </div>
-      <p class="bracket-note">Live seeding follows the current Standings page order, using the same points and tiebreak logic.</p>
+      <p class="bracket-note">Tip: click one winner in each semifinal, then one winner in the Play-In, then click a finalist to crown the champion.</p>
     </section>
   </main>
 
